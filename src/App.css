@@ -1,0 +1,78 @@
+*, body {
+    margin: 0;
+}
+
+body, html { height: 100%; }
+
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.project__title {
+    margin-top: 5rem;
+}
+
+.form__body {
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.form__title {
+    font-size: 1.4rem;
+    margin-right: 1rem;
+    line-height: 1.4rem;
+}
+
+.pi__form {
+    display: flex;
+    align-items: center;
+}
+
+.form__group {
+    display: flex;
+}
+
+.form__section {
+    margin: 0 1rem;
+    display: flex;
+    align-items: center;
+}
+.form__section--model {
+    width: 300px;
+}
+
+.form__section--currency {
+    width: 155px;
+}
+
+.form__label {
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+
+.pi__form--button {
+    height: 40px;
+    margin-left: 10px;
+}
+
+/* pi list */
+
+.piList__body {
+    text-align: center;
+}
+
+.piList__header {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.piList__table {
+    margin-top: 1rem;
+    text-align: left;
+    
+}
