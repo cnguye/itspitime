@@ -1,40 +1,58 @@
 import React from 'react'
 
 import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
-function PiList() {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faX } from '@fortawesome/free-solid-svg-icons';
+
+function PiList(props) {
+    const {
+        currUserSettings,
+        watchListRefreshTimeLeft,
+        refreshWatchList
+    } = props;
+
     return (
         <div className="piList__body">
-            <div className="piList__header">Watch list</div>
+            <div className="piList__header">
+                <div className="piList__header--title">
+                    Watch list
+                </div>
+                <Button onClick={refreshWatchList}
+                    className="piList__header--refresh__btn"
+                    variant="warning"
+                    disabled={watchListRefreshTimeLeft !== 0}
+                >
+                    Re-Scrape {watchListRefreshTimeLeft !== 0 ? `(${watchListRefreshTimeLeft}s)` : ''}
+                </Button>
+            </div>
             <Table className="piList__table" striped bordered hover>
                 <thead>
                     <tr>
-                        <th>SKU</th>
+                        <th>Sku</th>
                         <th>Model</th>
-                        <th>Link</th>
-                        <th>Cost</th>
-                        <th>Last Stock</th>
+                        <th>Currency</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>22315ASD</td>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td colSpan={4}>Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    {currUserSettings.map(piRow => {
+                        return (
+                            <tr className="piRow" key={`${piRow.sku}-${piRow.currency}`}>
+                                <td className="table-data">{piRow.sku}</td>
+                                <td className="table-data">{piRow.model}</td>
+                                <td className="table-data">{piRow.currency}</td>
+                                <td className="table-data table-data--actions">
+                                    <ButtonGroup className="table-data__button-group">
+                                        <Button className="table-data__button"><FontAwesomeIcon icon={faPenToSquare} /></Button>
+                                        <Button className="table-data__button"><FontAwesomeIcon icon={faX} /></Button>
+                                    </ButtonGroup>
+                                </td>
+                            </tr>
+                        )
+                    })}
                 </tbody>
             </Table>
         </div>
