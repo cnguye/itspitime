@@ -64,11 +64,6 @@ html {
 }
 
 /* pi list */
-
-.piList__body {
-    text-align: center;
-}
-
 .piList__header {
     text-align: center;
     position: relative;
@@ -90,6 +85,14 @@ html {
     text-align: left;
 }
 
+.table-data__button-group {
+    display: flex;
+}
+
+.table-data__button {
+    flex: 1;
+}
+
 /* Project Footer */
 .project__footer {
     width: 100%;
@@ -100,6 +103,6 @@ html {
     flex-grow: 10;
 }
 
-.cancelSettings__btn {
-
+:disabled {
+    background-color: lightgrey;
 }

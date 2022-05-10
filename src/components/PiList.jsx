@@ -1,18 +1,19 @@
 import React from 'react'
+import ListItem from './ListItem'
 
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faX } from '@fortawesome/free-solid-svg-icons';
 
 function PiList(props) {
     const {
         currUserSettings,
+        setCurrUserSettings,
         watchListRefreshTimeLeft,
-        refreshWatchList
+        refreshWatchList,
+        setIsListModified
     } = props;
+
 
     return (
         <div className="piList__body">
@@ -40,17 +41,15 @@ function PiList(props) {
                 <tbody>
                     {currUserSettings.map(piRow => {
                         return (
-                            <tr className="piRow" key={`${piRow.sku}-${piRow.currency}`}>
-                                <td className="table-data">{piRow.sku}</td>
-                                <td className="table-data">{piRow.model}</td>
-                                <td className="table-data">{piRow.currency}</td>
-                                <td className="table-data table-data--actions">
-                                    <ButtonGroup className="table-data__button-group">
-                                        <Button className="table-data__button"><FontAwesomeIcon icon={faPenToSquare} /></Button>
-                                        <Button className="table-data__button"><FontAwesomeIcon icon={faX} /></Button>
-                                    </ButtonGroup>
-                                </td>
-                            </tr>
+                            <ListItem
+                                key={`${piRow.sku}-${piRow.currency}`}
+                                sku={piRow.sku}
+                                model={piRow.model}
+                                currency={piRow.currency}
+                                setCurrUserSettings={setCurrUserSettings}
+                                currUserSettings={currUserSettings}
+                                setIsListModified={setIsListModified}
+                            />
                         )
                     })}
                 </tbody>

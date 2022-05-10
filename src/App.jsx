@@ -69,16 +69,12 @@ function App() {
         };
     }, [URL, dbUserSettings]);
 
-    useEffect( () => {
-        console.log("Hello dbModelsList");
-    }, [dbModelsList])
-
     // fetch user settings
     useEffect(() => {
         return () => {
-            async function postData(url = "", data = {}) {
+            async function postData(url = "", user_id) {
                 // Default options are marked with *
-                const response = await fetch(url, {
+                const response = await fetch(`${url}/?user_id=${user_id}`, {
                     method: "GET", // *GET, POST, PUT, DELETE, etc.
                     headers: {
                         "Content-Type": "application/json",
@@ -89,8 +85,9 @@ function App() {
                 });
                 return response.json(); // parses JSON response into native JavaScript objects
             }
-            postData(`${URL}/get_user_settings`, { user_id: USER_ID })
+            postData(`${URL}/get_user_settings`, USER_ID)
                 .then((data) => {
+                    data = JSON.parse(data[0].user_settings)
                     setDbUserSettings(data);
                     setCurrUserSettings(data);
                 });
@@ -148,28 +145,26 @@ function App() {
 
     const saveUserSettings = (e) => {
         e.preventDefault();
-        console.log("hello");
-        // async function addPiToWatchlist(url = "", data = {}) {
-        //     // Default options are marked with *
-        //     const response = await fetch(url, {
-        //         method: "POST", // *GET, POST, PUT, DELETE, etc.
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             Accept: "application/json",
-        //             // 'Content-Type': 'application/x-www-form-urlencoded',
-        //         },
-        //         body: JSON.stringify(data), // body data type must match "Content-Type" header
-        //     });
-        //     return response.json(); // parses JSON response into native JavaScript objects
-        // }
-        // addPiToWatchlist(`${URL}/add_pi`, { user_id: 1, user_settings: setCurrUserSettings })
-        //     .then((data) => {
-        //         alert("Updated user successfully!")
-        //     });
+        async function saveUserSettings(url = "", data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
+        saveUserSettings(`${URL}/save_user_settings`, { user_id: 1, user_settings: currUserSettings })
+            .then((data) => {
+                alert("Updated user successfully!")
+            });
     }
 
     const cancelUserSettings = (e) => {
-        console.log("Hello cancelUserSettings");
         e.preventDefault();
         setCurrUserSettings(dbUserSettings);
         setModelsList(dbModelsList);
@@ -195,8 +190,10 @@ function App() {
             />
             <PiList
                 currUserSettings={currUserSettings}
+                setCurrUserSettings={setCurrUserSettings}
                 watchListRefreshTimeLeft={watchListRefreshTimeLeft}
                 refreshWatchList={refreshWatchList}
+                setIsListModified={setIsListModified}
             />
             <ButtonGroup className="project__footer">
                 <Button onClick={saveUserSettings}
