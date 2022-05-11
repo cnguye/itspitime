@@ -39,6 +39,8 @@ function App() {
 
     const USER_ID = 1;
 
+    const DISABLE_SAVE_OVERRIDE = false;
+
     // fetch latest models and currencies
     useEffect(() => {
         return () => {
@@ -232,7 +234,7 @@ function App() {
                 <Button onClick={saveUserSettings}
                     className="saveSettings__btn"
                     variant={`${isListModified ? 'success' : 'secondary'}`}
-                    disabled={!isListModified}
+                    disabled={!isListModified || DISABLE_SAVE_OVERRIDE}
                     type="submit"
                 >
                     Save Watchlist
