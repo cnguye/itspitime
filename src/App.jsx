@@ -65,8 +65,8 @@ function App() {
 
             postData(`${URL}/get_pi_currencies`)
                 .then((data) => {
-                    setDbCurrenciesList([{currency: "ALL", id: 0}, ...data]);
-                    setCurrenciesList([{currency: "ALL", id: 0}, ...data]);
+                    setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+                    setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
                 });
         };
     }, [URL, dbUserSettings]);
@@ -120,9 +120,11 @@ function App() {
 
     // update form list
     useEffect(() => {
-        setModelsList(modelsList => modelsList.map((model) => {
+        let temp_dbModelsList = JSON.parse(JSON.stringify(dbModelsList))
+        setModelsList(temp_dbModelsList.map((model) => {
             currUserSettings.forEach(userRow => {
                 if (userRow.sku === model.sku && (userRow.currencies.includes('ALL') || userRow.currencies.length === (dbCurrenciesList.length))) {
+                    console.log(model);
                     model.disabled = true;
                 }
             });
@@ -181,9 +183,9 @@ function App() {
         } else {
             setCurrUserSettings(currUserSettings.map((row) => {
                 if (row.sku === formSkuSelected) {
-                    if(formCurrencySelected === "ALL")
-                        return {...row, currencies: ["ALL"]};
-                    return {...row, currencies: [...row.currencies, formCurrencySelected]};
+                    if (formCurrencySelected === "ALL")
+                        return { ...row, currencies: ["ALL"] };
+                    return { ...row, currencies: [...row.currencies, formCurrencySelected] };
                 }
                 return row;
             }));
