@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 // Bootstrap components
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Card from 'react-bootstrap/Card'
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 function PiForm(props) {
 
@@ -19,8 +19,8 @@ function PiForm(props) {
 
     const formModelSelectedHandler = (e) => {
         setFormSkuSelected(e.target.value);
-        setFormModelSelected(e.target.selectedOptions[0].text)
-    }
+        setFormModelSelected(e.target.selectedOptions[0].text);
+    };
 
     return (
         <Card className="form__body">
@@ -32,7 +32,7 @@ function PiForm(props) {
                             <Form.Label className="form__label">Model</Form.Label>
                             <Form.Select onChange={formModelSelectedHandler} value={formSkuSelected} className="form__select" aria-label="pi model list">
                                 {modelsList.map(model => {
-                                    return (<option value={model.sku} key={model.id} disabled={model.disabled}>{model.model}</option>)
+                                    return (<option value={model.sku} key={model.id} disabled={model.disabled}>{model.model}</option>);
                                 })}
                             </Form.Select>
                         </div>
@@ -41,7 +41,7 @@ function PiForm(props) {
                             <Form.Select onChange={(e) => setFormCurrencySelected(e.target.selectedOptions[0].text)} className="form__select" aria-label="Default select example">
                                 <option value="currency_ALL" key="currency_ALL">ALL</option>
                                 {currenciesList.map(currency => {
-                                    return (<option value={`currency_${currency.currency}`} key={`currency_${currency.id}`}>{currency.currency}</option>)
+                                    return (<option value={`currency_${currency.currency}`} key={`currency_${currency.id}`} disabled={currency.disabled}>{currency.currency}</option>);
                                 })}
                             </Form.Select>
                         </div>
@@ -53,7 +53,7 @@ function PiForm(props) {
             </Card.Body>
         </Card>
 
-    )
+    );
 }
 
-export default PiForm
+export default PiForm;

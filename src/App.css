@@ -16,9 +16,42 @@ html {
     margin: 0 auto;
 }
 
-.project__title {
-    margin-top: 5rem;
+
+.project__header {
+    text-align: center;
+    width: 95%;
+    margin: 2rem 0;
 }
+
+.project__logo {
+    width: 33%;
+}
+
+.project__title {
+    font-size: 1.4rem;
+    margin-top: 5px;
+}
+
+.project__description {
+    font-size: 1rem;
+}
+
+@media (min-width: 800px) {
+    .project__logo {
+        width: 10%;
+    }
+
+    .project__title {
+        font-size: 2rem;
+        margin-top: 1rem;
+    }
+
+    .project__description {
+        font-size: 1.5rem;
+    }
+}
+
+/* Pi form */
 
 .form__body {
     margin: 2rem 0;
@@ -31,26 +64,49 @@ html {
     line-height: 1.4rem;
 }
 
-.pi__form {
-    display: flex;
-    align-items: center;
-}
-
-.form__group {
-    display: flex;
-}
-
 .form__section {
-    margin: 0 1rem;
-    display: flex;
-    align-items: center;
-}
-.form__section--model {
-    width: 450px;
+    margin: 5px 0;
 }
 
-.form__section--currency {
-    width: 155px;
+.form__select {
+    font-size: 0.8rem;
+}
+
+.pi__form--button {
+    margin: 15px 0 0 0;
+}
+
+@media (min-width: 800px) {
+    .pi__form {
+        display: flex;
+        align-items: center;
+    }
+
+    .form__group {
+        display: flex;
+    }
+
+    .form__section {
+        margin: 0 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form__section--model {
+        width: 450px;
+    }
+    
+    .form__section--currency {
+        width: 155px;
+    }
+
+    .form__select {
+        font-size: 1rem;
+    }
+
+    .pi__form--button {
+        margin: 0 0 0 10px;
+    }
 }
 
 .form__label {
@@ -58,12 +114,15 @@ html {
     margin-bottom: 0;
 }
 
-.pi__form--button {
-    height: 40px;
-    margin-left: 10px;
-}
+
 
 /* pi list */
+
+.pi__table--row,
+.pi__table--head {
+    font-size: 0.8rem; 
+}
+
 .piList__header {
     text-align: center;
     position: relative;
@@ -85,12 +144,50 @@ html {
     text-align: left;
 }
 
+.table-data--currencies {
+    max-width: 100px;
+}
+
 .table-data__button-group {
     display: flex;
 }
 
 .table-data__button {
     flex: 1;
+}
+
+.fontAwesomeIcon {
+    font-size: 0.8rem;
+}
+
+.table-data__button {
+    padding: 0;
+}
+
+.table-data__button--help {
+    position: relative;
+}
+
+.helpIcon {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+
+@media (min-width: 800px) {
+    .pi__table--row,
+    .pi__table--head {
+        font-size: 1rem;
+    }
+
+    .table-data__button {
+        padding: 0.375rem 0.75rem;
+    }
+
+    .fontAwesomeIcon {
+        font-size: 1rem;
+    }
 }
 
 /* Project Footer */
