@@ -14,12 +14,17 @@ function PiForm(props) {
         addPiToWatchList,
         modelsList,
         currenciesList,
-        formSkuSelected
+        formSkuSelected,
+        formCurrencySelected
     } = props;
 
     const formModelSelectedHandler = (e) => {
         setFormSkuSelected(e.target.value);
         setFormModelSelected(e.target.selectedOptions[0].text);
+    };
+
+    const formCurrencySelectedHandler = (e) => {
+        setFormCurrencySelected(e.target.selectedOptions[0].text);
     };
 
     return (
@@ -38,10 +43,10 @@ function PiForm(props) {
                         </div>
                         <div className="form__section form__section--currency">
                             <Form.Label className="form__label">Currency</Form.Label>
-                            <Form.Select onChange={(e) => setFormCurrencySelected(e.target.selectedOptions[0].text)} className="form__select" aria-label="Default select example">
-                                <option value="currency_ALL" key="currency_ALL">ALL</option>
+                            <Form.Select onChange={formCurrencySelectedHandler} value={formCurrencySelected} className="form__select" aria-label="Default select example">
+                                {/* <option value="currency_ALL" key="currency_ALL">ALL</option> */}
                                 {currenciesList.map(currency => {
-                                    return (<option value={`currency_${currency.currency}`} key={`currency_${currency.id}`} disabled={currency.disabled}>{currency.currency}</option>);
+                                    return (<option key={`currency_${currency.id}`} disabled={currency.disabled}>{currency.currency}</option>);
                                 })}
                             </Form.Select>
                         </div>

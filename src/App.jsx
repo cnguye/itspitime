@@ -65,8 +65,8 @@ function App() {
 
             postData(`${URL}/get_pi_currencies`)
                 .then((data) => {
-                    setDbCurrenciesList(data);
-                    setCurrenciesList(data);
+                    setDbCurrenciesList([{currency: "ALL", id: 0}, ...data]);
+                    setCurrenciesList([{currency: "ALL", id: 0}, ...data]);
                 });
         };
     }, [URL, dbUserSettings]);
@@ -141,15 +141,25 @@ function App() {
         }
     }, [modelsList]);
 
-    // filter form currencies to what is available to add to the watchlist
+    // Set next available currency as pre-selected model after user adds a model
+    useEffect(() => {
+        for (let i = 0; i < currenciesList.length; i++) {
+            if (!currenciesList[i].disabled) {
+                setFormCurrencySelected(currenciesList[i].currency);
+                break;
+            }
+        }
+    }, [currenciesList, modelsList]);
+
+    // filter form currencies for what is available to add to the watchlist
     useEffect(() => {
         let currUserSettingsSku = currUserSettings[currUserSettings.findIndex(row => row.sku === formSkuSelected)];
-        let currentCurrencies = currUserSettingsSku !== undefined ? currUserSettingsSku.currencies : []; 
+        let currentCurrencies = currUserSettingsSku !== undefined ? currUserSettingsSku.currencies : [];
         setCurrenciesList(dbCurrenciesList.map((currency) => {
-            if(currentCurrencies.includes(currency.currency)){
+            if (currentCurrencies.includes(currency.currency)) {
                 return {
                     ...currency, disabled: true
-                }
+                };
             }
             return currency;
         }));
@@ -171,9 +181,9 @@ function App() {
         } else {
             setCurrUserSettings(currUserSettings.map((row) => {
                 if (row.sku === formSkuSelected) {
-                    return {
-                        ...row, currencies: [...row.currencies, formCurrencySelected]
-                    };
+                    if(formCurrencySelected === "ALL")
+                        return {...row, currencies: ["ALL"]};
+                    return {...row, currencies: [...row.currencies, formCurrencySelected]};
                 }
                 return row;
             }));
@@ -209,6 +219,7 @@ function App() {
                 currenciesList={currenciesList}
                 setCurrenciesList={setCurrenciesList}
                 formSkuSelected={formSkuSelected}
+                formCurrencySelected={formCurrencySelected}
             />
             <PiList
                 currUserSettings={currUserSettings}
