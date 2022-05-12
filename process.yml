@@ -1,0 +1,8 @@
+apps:
+        - script: './script_server.js'
+          exec_mode: 'fork'
+          name: 'script_worker-0'
+          env:
+                  PORT: 5001
+                  NODE_ENV: production
+

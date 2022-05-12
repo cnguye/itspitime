@@ -1,26 +1,38 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const app = express();
 const cors = require("cors");
+const app = express();
+app.use(cors());
+
 const port = process.env.PORT || 5001;
 const mysql = require("mysql");
+const bodyParser = require("body-parser");
 
 require("dotenv").config({ path: ".env" });
 
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// This displays message that the server running and listening to specified port
+app.listen(port, () => {
+    console.log(`server running on port ${port} `);
+});
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
+
 const db = mysql.createPool({
-    host: process.env.DB_DB,
+    host: process.env.DB_LOCALHOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_MAIN,
 });
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    next();
+// create a GET route
+app.get("/express_backend", (req, res) => {
+    res.set("Content-Type", "text/html");
+    res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT FROM DB_API" });
 });
 
 app.get("/get_pi_skus", (req, res) => {
@@ -53,8 +65,3 @@ app.post("/save_user_settings", (req, res) => {
         res.status(200).send(results)
     })
 })
-
-
-app.listen(port, () => {
-    console.log("server running on port 5001... ");
-});

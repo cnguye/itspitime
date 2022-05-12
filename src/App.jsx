@@ -20,7 +20,7 @@ function App() {
     const URL =
         process.env.NODE_ENV !== "production"
             ? "http://localhost:5001"
-            : "https://pitim.christopherhnguyen.com/api";
+            : "https://pitim.christopherhnguyen.com/db_api";
     // user settings
     const [dbUserSettings, setDbUserSettings] = useState([]);
     const [currUserSettings, setCurrUserSettings] = useState([]);
@@ -39,62 +39,57 @@ function App() {
     const USER_ID = 1;
 
     const DISABLE_SAVE_OVERRIDE = false;
-
     // fetch latest models and currencies
     useEffect(() => {
-        return () => {
-            async function postData(url = "", data = {}) {
-                // Default options are marked with *
-                const response = await fetch(url, {
-                    method: "GET", // *GET, POST, PUT, DELETE, etc.
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        // 'Content-Type': 'application/x-www-form-urlencoded',
-                    }
-                    // body: JSON.stringify(data) // body data type must match "Content-Type" header 
-                });
-                return response.json(); // parses JSON response into native JavaScript objects
-            }
-            postData(`${URL}/get_pi_skus`)
-                .then((data) => {
-                    setModelsList(JSON.parse(JSON.stringify(data)));
-                    setDbModelsList(JSON.parse(JSON.stringify(data)));
-                    setFormSkuSelected(data[0].sku);
-                    setFormModelSelected(data[0].model);
-                });
+        async function postData(url = "", data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: "GET", // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                }
+                // body: JSON.stringify(data) // body data type must match "Content-Type" header 
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
+        postData(`${URL}/get_pi_skus`)
+            .then((data) => {
+                setModelsList(JSON.parse(JSON.stringify(data)));
+                setDbModelsList(JSON.parse(JSON.stringify(data)));
+                setFormSkuSelected(data[0].sku);
+                setFormModelSelected(data[0].model);
+            });
 
-            postData(`${URL}/get_pi_currencies`)
-                .then((data) => {
-                    setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-                    setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-                });
-        };
+        postData(`${URL}/get_pi_currencies`)
+            .then((data) => {
+                setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+                setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+            });
     }, [URL, dbUserSettings]);
 
     // fetch user settings
     useEffect(() => {
-        return () => {
-            async function postData(url = "", user_id) {
-                // Default options are marked with *
-                const response = await fetch(`${url}/?user_id=${user_id}`, {
-                    method: "GET", // *GET, POST, PUT, DELETE, etc.
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        // 'Content-Type': 'application/x-www-form-urlencoded',
-                    }
-                    // body: JSON.stringify(data) // body data type must match "Content-Type" header 
+        async function postData(url = "", user_id) {
+            // Default options are marked with *
+            const response = await fetch(`${url}/?user_id=${user_id}`, {
+                method: "GET", // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                }
+                // body: JSON.stringify(data) // body data type must match "Content-Type" header 
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
+        postData(`${URL}/get_user_settings`, USER_ID)
+            .then((data) => {
+                data = data[0] !== undefined ? JSON.parse(data[0].user_settings) : [];
+                setDbUserSettings(data);
+                setCurrUserSettings(data);
                 });
-                return response.json(); // parses JSON response into native JavaScript objects
-            }
-            postData(`${URL}/get_user_settings`, USER_ID)
-                .then((data) => {
-                    data = data[0] !== undefined ? JSON.parse(data[0].user_settings) : [];
-                    setDbUserSettings(data);
-                    setCurrUserSettings(data);
-                });
-        };
     }, [URL]);
 
     // save user settings
