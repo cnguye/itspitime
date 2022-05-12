@@ -13,6 +13,7 @@ import PiList from "./components/PiList";
 import PiForm from "./components/PiForm";
 
 // import bootstrap components
+import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 
@@ -38,7 +39,7 @@ function App() {
 
     const USER_ID = 1;
 
-    const DISABLE_SAVE_OVERRIDE = false;
+    const DISABLE_SAVE_OVERRIDE = true;
     // fetch latest models and currencies
     useEffect(() => {
         async function postData(url = "", data = {}) {
@@ -241,6 +242,12 @@ function App() {
                     Reset Changes
                 </Button>
             </ButtonGroup>
+            { isListModified && DISABLE_SAVE_OVERRIDE &&           
+                <Card className="disable_save_override" border={"danger"} bg={"light"}>
+                    <p>Sorry, saving has been disabled by the admin (me) as I figure out how to get user login to work. But feel free to mess around with the app!</p>
+                    <p>You can find out more about me and my projects <a href="https://christopherhnguyen.com" target="_black">here</a>.</p>
+                </Card>
+            }
         </div >
     );
 }
