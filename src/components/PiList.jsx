@@ -4,6 +4,10 @@ import ListItem from './ListItem';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
+// font awesome icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRotate } from '@fortawesome/free-solid-svg-icons';
+
 
 function PiList(props) {
     const {
@@ -39,7 +43,13 @@ function PiList(props) {
                     variant="warning"
                     disabled={watchListRefreshTimeLeft !== 0}
                 >
-                    Re-Scrape {watchListRefreshTimeLeft !== 0 ? `(${watchListRefreshTimeLeft}s)` : ''}
+                    <span className="re-scrape--icon">
+                        <FontAwesomeIcon icon={faRotate}></FontAwesomeIcon>
+                        {watchListRefreshTimeLeft !== 0 ? ` (${watchListRefreshTimeLeft}s)` : ''}
+                    </span>
+                    <span className="re-scrape--text">
+                        Re-Scrape {watchListRefreshTimeLeft !== 0 ? `(${watchListRefreshTimeLeft}s)` : ''}
+                    </span>
                 </Button>
             </div>
             <Table className="piList__table" striped bordered hover>

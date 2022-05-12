@@ -14,9 +14,8 @@ html {
     align-items: center;
     justify-content: center;
     width: 90%;
-    margin: 0 auto;
+    margin: 0 auto 2rem;
 }
-
 
 .project__header {
     text-align: center;
@@ -116,8 +115,6 @@ html {
     margin-bottom: 0;
 }
 
-
-
 /* pi list */
 
 .piList__body {
@@ -138,6 +135,12 @@ html {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+
+
+.re-scrape--text {
+    display: none;
 }
 
 .piList__header--title {
