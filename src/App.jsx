@@ -21,7 +21,6 @@ function App() {
         process.env.NODE_ENV !== "production"
             ? "http://localhost:5001"
             : "https://pitim.christopherhnguyen.com/api";
-
     // user settings
     const [dbUserSettings, setDbUserSettings] = useState([]);
     const [currUserSettings, setCurrUserSettings] = useState([]);
@@ -126,7 +125,6 @@ function App() {
         setModelsList(temp_dbModelsList.map((model) => {
             currUserSettings.forEach(userRow => {
                 if (userRow.sku === model.sku && (userRow.currencies.includes('ALL') || userRow.currencies.length === (dbCurrenciesList.length))) {
-                    console.log(model);
                     model.disabled = true;
                 }
             });

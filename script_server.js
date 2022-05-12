@@ -5,7 +5,7 @@ const cors = require("cors");
 const port = process.env.PORT || 5001;
 const mysql = require("mysql");
 
-require("dotenv").config({ path: "~/.env" });
+require("dotenv").config({ path: ".env" });
 
 const db = mysql.createPool({
     host: process.env.DB_DB,
