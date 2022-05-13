@@ -26,20 +26,21 @@ function App() {
     const [dbUserSettings, setDbUserSettings] = useState([]);
     const [currUserSettings, setCurrUserSettings] = useState([]);
 
-    const [dbModelsList, setDbModelsList] = useState([]);
-    const [modelsList, setModelsList] = useState([]);
+    // get existing models and currencies from database
+    const [dbUserWatchList, setDbUserWatchList] = useState([]);
+    const [userWatchList, setUserWatchList] = useState([]);
     const [dbCurrenciesList, setDbCurrenciesList] = useState([]);
     const [currenciesList, setCurrenciesList] = useState([]);
 
+    // app variables
     const [formSkuSelected, setFormSkuSelected] = useState("");
     const [formModelSelected, setFormModelSelected] = useState("");
     const [formCurrencySelected, setFormCurrencySelected] = useState("ALL");
-
     const [isListModified, setIsListModified] = useState(false);
 
     const USER_ID = 1;
 
-    const DISABLE_SAVE_OVERRIDE = true;
+    const DISABLE_SAVE_OVERRIDE = false;
     // fetch latest models and currencies
     useEffect(() => {
         async function postData(url = "", data = {}) {
@@ -57,8 +58,8 @@ function App() {
         }
         postData(`${URL}/get_pi_skus`)
             .then((data) => {
-                setModelsList(JSON.parse(JSON.stringify(data)));
-                setDbModelsList(JSON.parse(JSON.stringify(data)));
+                setUserWatchList(JSON.parse(JSON.stringify(data)));
+                setDbUserWatchList(JSON.parse(JSON.stringify(data)));
                 setFormSkuSelected(data[0].sku);
                 setFormModelSelected(data[0].model);
             });
@@ -90,7 +91,7 @@ function App() {
                 data = data[0] !== undefined ? JSON.parse(data[0].user_settings) : [];
                 setDbUserSettings(data);
                 setCurrUserSettings(data);
-                });
+            });
     }, [URL]);
 
     // save user settings
@@ -117,8 +118,8 @@ function App() {
 
     // update form list
     useEffect(() => {
-        let temp_dbModelsList = JSON.parse(JSON.stringify(dbModelsList))
-        setModelsList(temp_dbModelsList.map((model) => {
+        let temp_dbUserWatchList = JSON.parse(JSON.stringify(dbUserWatchList));
+        setUserWatchList(temp_dbUserWatchList.map((model) => {
             currUserSettings.forEach(userRow => {
                 if (userRow.sku === model.sku && (userRow.currencies.includes('ALL') || userRow.currencies.length === (dbCurrenciesList.length))) {
                     model.disabled = true;
@@ -126,18 +127,18 @@ function App() {
             });
             return model;
         }));
-    }, [dbCurrenciesList.length, dbModelsList, currUserSettings]);
+    }, [dbCurrenciesList.length, dbUserWatchList, currUserSettings]);
 
     // Set next available model as pre-selected model after user adds a model
     useEffect(() => {
-        for (let i = 0; i < modelsList.length; i++) {
-            if (!modelsList[i].disabled) {
-                setFormSkuSelected(modelsList[i].sku);
-                setFormModelSelected(modelsList[i].model);
+        for (let i = 0; i < userWatchList.length; i++) {
+            if (!userWatchList[i].disabled) {
+                setFormSkuSelected(userWatchList[i].sku);
+                setFormModelSelected(userWatchList[i].model);
                 break;
             }
         }
-    }, [modelsList]);
+    }, [userWatchList]);
 
     // Set next available currency as pre-selected model after user adds a model
     useEffect(() => {
@@ -147,7 +148,7 @@ function App() {
                 break;
             }
         }
-    }, [currenciesList, modelsList]);
+    }, [currenciesList, userWatchList]);
 
     // filter form currencies for what is available to add to the watchlist
     useEffect(() => {
@@ -188,11 +189,21 @@ function App() {
         }
     };
 
+
+    const formModelSelectedHandler = (e) => {
+        setFormSkuSelected(e.target.value);
+        setFormModelSelected(e.target.selectedOptions[0].text);
+    };
+
+    const formCurrencySelectedHandler = (e) => {
+        setFormCurrencySelected(e.target.selectedOptions[0].text);
+    };
+
     // reset user settings to current database user settings
     const resetUserSettings = (e) => {
         e.preventDefault();
         setCurrUserSettings(dbUserSettings);
-        setModelsList(dbModelsList);
+        setUserWatchList(dbUserWatchList);
         setIsListModified(false);
     };
 
@@ -209,20 +220,22 @@ function App() {
                 </h3>
             </div>
             <PiForm
-                setFormSkuSelected={setFormSkuSelected}
-                setFormModelSelected={setFormModelSelected}
-                setFormCurrencySelected={setFormCurrencySelected}
                 addPiToWatchList={addPiToWatchList}
-                modelsList={modelsList}
+                userWatchList={userWatchList}
                 currenciesList={currenciesList}
                 setCurrenciesList={setCurrenciesList}
-                formSkuSelected={formSkuSelected}
-                formCurrencySelected={formCurrencySelected}
+                formModelSelectedHandler={formModelSelectedHandler}
+                formCurrencySelectedHandler={formCurrencySelectedHandler}
             />
             <PiList
                 currUserSettings={currUserSettings}
                 setCurrUserSettings={setCurrUserSettings}
+                currenciesList={currenciesList}
                 setIsListModified={setIsListModified}
+                formModelSelectedHandler={formModelSelectedHandler}
+                formCurrencySelectedHandler={formCurrencySelectedHandler}
+                userWatchList={userWatchList}
+                setUserWatchList={setUserWatchList}
             />
             <ButtonGroup className="project__footer">
                 <Button onClick={saveUserSettings}
@@ -242,7 +255,7 @@ function App() {
                     Reset Changes
                 </Button>
             </ButtonGroup>
-            { isListModified && DISABLE_SAVE_OVERRIDE &&           
+            {isListModified && DISABLE_SAVE_OVERRIDE &&
                 <Card className="disable_save_override" border={"danger"} bg={"light"}>
                     <p>Sorry, saving has been disabled by the admin (me) as I figure out how to get user login to work. But feel free to mess around with the app!</p>
                     <p>You can find out more about me and my projects <a href="https://christopherhnguyen.com" target="_black">here</a>.</p>

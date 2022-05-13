@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+// import components
+import WatchListRowButtonGroup from './WatchListRowButtonGroup';
+import PiFormEditModel from './PiFormEditModel';
+import PiFormEditCurrency from './PiFormEditCurrency';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faX } from '@fortawesome/free-solid-svg-icons';
+// import fontawesome icons
+import { faPenToSquare, faX, faFloppyDisk, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
 function ListItem(props) {
     const {
+        piRowKey,
         sku,
         model,
         currencies,
         setCurrUserSettings,
         currUserSettings,
-        setIsListModified
+        setIsListModified,
+        userWatchList,
+        currenciesList,
+        edittingRowIndex,
+        setEdittingRowIndex,
     } = props;
+
+    const [isEditting, setIsEditting] = useState(false);
+    const [editModelSelected, setEditModelSelected] = useState("");
+    const [editCurrenciesSelected, setEditCurrenciesSelected] = useState([]);
 
     const removePiHandler = () => {
         setCurrUserSettings(
@@ -25,20 +36,73 @@ function ListItem(props) {
         setIsListModified(true);
     };
 
+    const editRowHandler = () => {
+        setIsEditting(true);
+        setEdittingRowIndex(piRowKey);
+        setEditModelSelected(currUserSettings[piRowKey].model);
+        setEditCurrenciesSelected(currUserSettings[piRowKey].currencies);
+    };
+
+    const saveEditRowHandler = (e) => {
+        setIsEditting(false);
+        setCurrUserSettings(currUserSettings.map((piRowSetting, piRowSettingKey) => {
+            if (piRowSettingKey === piRowKey) {
+                return { ...piRowSetting, model: editModelSelected, currencies: editCurrenciesSelected };
+            }
+            return piRowSetting;
+        }));
+    };
+
+    const cancelEditRowHandler = (e) => {
+        setIsEditting(false);
+    };
+
     return (
         <tr className="pi__table--row" >
             <td className="table-data">{sku}</td>
-            <td className="table-data">{model}</td>
-            <td className="table-data table-data--currencies">{currencies.join(", ")}</td>
+            <td className="table-data">
+                {
+                    isEditting && edittingRowIndex === piRowKey ?
+                        <PiFormEditModel
+                            userWatchList={userWatchList}
+                            editModelSelected={editModelSelected}
+                            setEditModelSelected={setEditModelSelected}
+                        />
+                        : model
+                }
+            </td>
+            <td className="table-data table-data--currencies">
+                {
+                    isEditting && edittingRowIndex === piRowKey ?
+                        <PiFormEditCurrency
+                            currencies={currencies}
+                            currenciesList={currenciesList}
+                            editCurrenciesSelected={editCurrenciesSelected}
+                            setEditCurrenciesSelected={setEditCurrenciesSelected}
+                        />
+                        : currencies.join(", ")
+                }
+            </td>
             <td className="table-data table-data--actions">
-                <ButtonGroup className="table-data__button-group">
-                    <Button className="table-data__button" variant="primary">
-                        <FontAwesomeIcon className="fontAwesomeIcon" icon={faPenToSquare} />
-                    </Button>
-                    <Button onClick={removePiHandler} className="table-data__button" variant="danger">
-                        <FontAwesomeIcon className="fontAwesomeIcon" icon={faX} />
-                    </Button>
-                </ButtonGroup>
+                {isEditting && edittingRowIndex === piRowKey ?
+                    <WatchListRowButtonGroup
+                        btnVariantOne="success"
+                        btnVariantTwo="warning"
+                        btnOnClickOne={saveEditRowHandler}
+                        btnOnClickTwo={cancelEditRowHandler}
+                        btnIconOne={faFloppyDisk}
+                        btnIconTwo={faArrowRotateLeft}
+                    ></WatchListRowButtonGroup>
+                    :
+                    <WatchListRowButtonGroup
+                        btnVariantOne="primary"
+                        btnVariantTwo="danger"
+                        btnOnClickOne={editRowHandler}
+                        btnOnClickTwo={removePiHandler}
+                        btnIconOne={faPenToSquare}
+                        btnIconTwo={faX}
+                    ></WatchListRowButtonGroup>
+                }
             </td>
         </tr>
     );

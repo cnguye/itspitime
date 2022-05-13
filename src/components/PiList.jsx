@@ -13,10 +13,16 @@ function PiList(props) {
     const {
         currUserSettings,
         setCurrUserSettings,
-        setIsListModified
+        currenciesList,
+        setIsListModified,
+        formModelSelectedHandler,
+        formCurrencySelectedHandler,
+        userWatchList,
+        setUserWatchList
     } = props;
 
     const [watchListRefreshTimeLeft, setWatchListRefreshTimeLeft] = useState(0);
+    const [edittingRowIndex, setEdittingRowIndex] = useState();
 
     const rescrapeWatchList = (e) => {
         e.preventDefault();
@@ -43,11 +49,11 @@ function PiList(props) {
                     variant="warning"
                     disabled={watchListRefreshTimeLeft !== 0}
                 >
-                    <span className="re-scrape--icon">
+                    <span className="re-scrape__icon">
                         <FontAwesomeIcon icon={faRotate}></FontAwesomeIcon>
-                        {watchListRefreshTimeLeft !== 0 ? ` (${watchListRefreshTimeLeft}s)` : ''}
+                        <span className="re-scrape__icon--text">{watchListRefreshTimeLeft !== 0 ? ` (${watchListRefreshTimeLeft}s)` : ''}</span>
                     </span>
-                    <span className="re-scrape--text">
+                    <span className="re-scrape__text">
                         Re-Scrape {watchListRefreshTimeLeft !== 0 ? `(${watchListRefreshTimeLeft}s)` : ''}
                     </span>
                 </Button>
@@ -62,16 +68,31 @@ function PiList(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {currUserSettings.map(piRow => {
+                    {/* {
+                        currUserSettings.map( (piRow, piRowKey) => {
+                            console.log(piRow);
+                            return <tr key={`${piRow.sku}-${piRow.currencies}`}><td>{piRow.sku}</td></tr>;
+                        })
+                    } */}
+                    {currUserSettings.map( (piRow, piRowKey) => {
                         return (
                             <ListItem
                                 key={`${piRow.sku}-${piRow.currencies}`}
+                                piRowKey={piRowKey}
                                 sku={piRow.sku}
                                 model={piRow.model}
                                 currencies={piRow.currencies}
-                                setCurrUserSettings={setCurrUserSettings}
+                                edittingRowIndex={edittingRowIndex}
+                                setEdittingRowIndex={setEdittingRowIndex}
+
                                 currUserSettings={currUserSettings}
+                                setCurrUserSettings={setCurrUserSettings}
+                                currenciesList={currenciesList}
                                 setIsListModified={setIsListModified}
+                                formModelSelectedHandler={formModelSelectedHandler}
+                                formCurrencySelectedHandler={formCurrencySelectedHandler}
+                                userWatchList={userWatchList}
+                                setUserWatchList={setUserWatchList}
                             />
                         );
                     })}
