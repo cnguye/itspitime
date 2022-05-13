@@ -43,7 +43,6 @@ function App() {
     const DISABLE_SAVE_OVERRIDE = true;
     // fetch latest models and currencies
     useEffect(() => {
-        console.log("hello app");
         async function postData(url = "", data = {}) {
             // Default options are marked with *
             const response = await fetch(url, {

@@ -12,7 +12,13 @@ function PiFormEditModel(props) {
     return (
         <Form.Select onChange={(e) => setEditModelSelected(e.target.value)} value={editModelSelected} className="form__select" aria-label="pi model list">
             {userWatchList.map(model => {
-                return (<option key={model.id} disabled={model.disabled}>{model.model}</option>);
+                return (
+                    <option
+                        key={model.id}
+                        disabled={model.disabled}
+                    >
+                        {model.model}
+                    </option>);
             })}
         </Form.Select>
     );

@@ -49,7 +49,10 @@ function ListItem(props) {
             if (piRowSettingKey === piRowKey) {
                 if(piRowSetting.model !== editModelSelected || piRowSetting.currencies !== editCurrenciesSelected){
                     setIsListModified(true);
-                    return { ...piRowSetting, model: editModelSelected, currencies: editCurrenciesSelected };
+                    if(editCurrenciesSelected.includes("ALL"))
+                        return { ...piRowSetting, model: editModelSelected, currencies: ["ALL"] };
+                    else
+                        return { ...piRowSetting, model: editModelSelected, currencies: editCurrenciesSelected };
                 }
             }
             return piRowSetting;

@@ -12,7 +12,6 @@ function PiFormEditCurrency(props) {
     } = props;
 
     const editAddSelectedCurrency = (e, currencyKey) => {
-        console.log("hehe");
         if (!editCurrenciesSelected.includes(e.target.value)) {
             setEditCurrenciesSelected(
                 editCurrenciesSelected.map((editCurrency, editCurrencyKey) => {
@@ -40,7 +39,7 @@ function PiFormEditCurrency(props) {
                                     return (
                                         <option
                                             key={`currency_${currency.id}`}
-                                            disabled={currency.disabled}
+                                            disabled={editCurrenciesSelected.includes(currency.currency)}
                                         >
                                             {currency.currency}
                                         </option>
