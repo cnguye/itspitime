@@ -47,7 +47,10 @@ function ListItem(props) {
         setIsEditting(false);
         setCurrUserSettings(currUserSettings.map((piRowSetting, piRowSettingKey) => {
             if (piRowSettingKey === piRowKey) {
-                return { ...piRowSetting, model: editModelSelected, currencies: editCurrenciesSelected };
+                if(piRowSetting.model !== editModelSelected || piRowSetting.currencies !== editCurrenciesSelected){
+                    setIsListModified(true);
+                    return { ...piRowSetting, model: editModelSelected, currencies: editCurrenciesSelected };
+                }
             }
             return piRowSetting;
         }));

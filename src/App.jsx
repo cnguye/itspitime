@@ -40,9 +40,10 @@ function App() {
 
     const USER_ID = 1;
 
-    const DISABLE_SAVE_OVERRIDE = false;
+    const DISABLE_SAVE_OVERRIDE = true;
     // fetch latest models and currencies
     useEffect(() => {
+        console.log("hello app");
         async function postData(url = "", data = {}) {
             // Default options are marked with *
             const response = await fetch(url, {
@@ -69,7 +70,7 @@ function App() {
                 setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
                 setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
             });
-    }, [URL, dbUserSettings]);
+    }, [URL]);
 
     // fetch user settings
     useEffect(() => {
