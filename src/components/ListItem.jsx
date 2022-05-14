@@ -24,6 +24,7 @@ function ListItem(props) {
     } = props;
 
     const [isEditting, setIsEditting] = useState(false);
+    const [editSkuSelected, setEdiSkuSelected] = useState("");
     const [editModelSelected, setEditModelSelected] = useState("");
     const [editCurrenciesSelected, setEditCurrenciesSelected] = useState([]);
 
@@ -39,6 +40,7 @@ function ListItem(props) {
     const editRowHandler = () => {
         setIsEditting(true);
         setEdittingRowIndex(piRowKey);
+        setEdiSkuSelected(sku);
         setEditModelSelected(currUserSettings[piRowKey].model);
         setEditCurrenciesSelected(currUserSettings[piRowKey].currencies);
     };
@@ -50,9 +52,9 @@ function ListItem(props) {
                 if(piRowSetting.model !== editModelSelected || piRowSetting.currencies !== editCurrenciesSelected){
                     setIsListModified(true);
                     if(editCurrenciesSelected.includes("ALL"))
-                        return { ...piRowSetting, model: editModelSelected, currencies: ["ALL"] };
+                        return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: ["ALL"] };
                     else
-                        return { ...piRowSetting, model: editModelSelected, currencies: editCurrenciesSelected };
+                        return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: editCurrenciesSelected };
                 }
             }
             return piRowSetting;
@@ -61,17 +63,19 @@ function ListItem(props) {
 
     const cancelEditRowHandler = (e) => {
         setIsEditting(false);
+        setEdiSkuSelected("");
     };
 
     return (
         <tr className="pi__table--row" >
-            <td className="table-data">{sku}</td>
+            <td className="table-data">{editSkuSelected === "" ? sku : editSkuSelected}</td>
             <td className="table-data">
                 {
                     isEditting && edittingRowIndex === piRowKey ?
                         <PiFormEditModel
                             userWatchList={userWatchList}
                             editModelSelected={editModelSelected}
+                            setEdiSkuSelected={setEdiSkuSelected}
                             setEditModelSelected={setEditModelSelected}
                         />
                         : model

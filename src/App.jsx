@@ -16,6 +16,8 @@ import PiForm from "./components/PiForm";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Accordion from "react-bootstrap/Accordion";
+import ListGroup from "react-bootstrap/ListGroup";
 
 function App() {
     const URL =
@@ -259,6 +261,31 @@ function App() {
                 <Card className="disable_save_override" border={"danger"} bg={"light"}>
                     <p>Sorry, saving has been disabled by the admin (me) as I figure out how to get user login to work. But feel free to mess around with the app!</p>
                     <p>You can find out more about me and my projects <a href="https://christopherhnguyen.com" target="_black">here</a>.</p>
+                    <Accordion>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Project timeline:</Accordion.Header>
+                            <Accordion.Body>
+                                <ListGroup as="ol" numbered>
+                                    <ListGroup.Item
+                                        as="li"
+                                        className="d-flex justify-content-between align-items-start"
+                                    >
+                                        <div className="ms-2 me-auto">
+                                            <div className="fw-bold">User login and authentication</div>
+                                        </div>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item
+                                        as="li"
+                                        className="d-flex justify-content-between align-items-start"
+                                    >
+                                        <div className="ms-2 me-auto">
+                                            <div className="fw-bold">Blacklist sites</div>
+                                        </div>
+                                    </ListGroup.Item>
+                                </ListGroup>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
                 </Card>
             }
         </div >
