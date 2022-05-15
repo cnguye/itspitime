@@ -226,6 +226,11 @@ html {
     text-align: center;
 }
 
+.disable_save_override--list-group {
+    border: none;
+    text-align: left;
+}
+
 @media (min-width: 800px) {
     .disable_save_override {
         margin-top: 1rem;

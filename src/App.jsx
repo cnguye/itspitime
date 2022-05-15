@@ -226,6 +226,7 @@ function App() {
                 userWatchList={userWatchList}
                 currenciesList={currenciesList}
                 setCurrenciesList={setCurrenciesList}
+                formModelSelected={formModelSelected}
                 formModelSelectedHandler={formModelSelectedHandler}
                 formCurrencySelectedHandler={formCurrencySelectedHandler}
             />
@@ -259,7 +260,7 @@ function App() {
             </ButtonGroup>
             {isListModified && DISABLE_SAVE_OVERRIDE &&
                 <Card className="disable_save_override" border={"danger"} bg={"light"}>
-                    <p>Sorry, saving has been disabled by the admin (me) as I figure out how to get user login to work. But feel free to mess around with the app!</p>
+                    <p>Sorry, saving has been disabled by the admin (me) as I figure out how to get user login to work. Feel free to mess around with the app!</p>
                     <p>You can find out more about me and my projects <a href="https://christopherhnguyen.com" target="_black">here</a>.</p>
                     <Accordion>
                         <Accordion.Item eventKey="0">
@@ -268,7 +269,7 @@ function App() {
                                 <ListGroup as="ol" numbered>
                                     <ListGroup.Item
                                         as="li"
-                                        className="d-flex justify-content-between align-items-start"
+                                        className="d-flex justify-content-between align-items-start disable_save_override--list-group"
                                     >
                                         <div className="ms-2 me-auto">
                                             <div className="fw-bold">User login and authentication</div>
@@ -276,7 +277,7 @@ function App() {
                                     </ListGroup.Item>
                                     <ListGroup.Item
                                         as="li"
-                                        className="d-flex justify-content-between align-items-start"
+                                        className="d-flex justify-content-between align-items-start disable_save_override--list-group"
                                     >
                                         <div className="ms-2 me-auto">
                                             <div className="fw-bold">Blacklist sites</div>

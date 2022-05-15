@@ -15,6 +15,7 @@ function PiForm(props) {
         addPiToWatchList,
         userWatchList,
         currenciesList,
+        formModelSelected,
         formModelSelectedHandler,
         formCurrencySelectedHandler
     } = props;
@@ -29,6 +30,7 @@ function PiForm(props) {
                         <div className="form__section form__section--model">
                             <Form.Label className="form__label">Model</Form.Label>
                             <PiFormSelectModel
+                                formModelSelected={formModelSelected}
                                 formModelSelectedHandler={formModelSelectedHandler}
                                 userWatchList={userWatchList}>
                             </PiFormSelectModel>
