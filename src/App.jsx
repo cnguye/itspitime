@@ -216,7 +216,7 @@ function App() {
                 <h1 className="project__title">Pi Tim: rpilocator Telegram notifier</h1>
                 <h3 className="project__description">
                     <i>
-                        This scraper will tell a Telegram bot to send me a message every minute if
+                        This app will tell a Telegram bot to send me a message every minute if
                         a Raspberry Pi is in stock
                     </i>
                 </h3>
