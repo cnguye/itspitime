@@ -19,7 +19,6 @@ const Register = () => {
                 password: password,
                 confPassword: confPassword
             });
-            console.log("Hello register done");
             navigate("/", { replace: true });
         } catch (error) {
             if (error.response) {

@@ -25,7 +25,6 @@ const Dashboard = () => {
             setExpire(decoded.exp);
         } catch (error) {
             if (error.response) {
-            console.log("28");
                 navigate("/");
             }
         }
@@ -45,7 +44,6 @@ const Dashboard = () => {
         }
         return config;
     }, (error) => {
-        console.log("47");
         return Promise.reject(error);
     });
 

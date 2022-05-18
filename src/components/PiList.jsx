@@ -20,7 +20,6 @@ function PiList(props) {
         userWatchList,
         setUserWatchList
     } = props;
-
     const [watchListRefreshTimeLeft, setWatchListRefreshTimeLeft] = useState(0);
     const [edittingRowIndex, setEdittingRowIndex] = useState();
 
@@ -68,12 +67,6 @@ function PiList(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {
-                        currUserSettings.map( (piRow, piRowKey) => {
-                            console.log(piRow);
-                            return <tr key={`${piRow.sku}-${piRow.currencies}`}><td>{piRow.sku}</td></tr>;
-                        })
-                    } */}
                     {currUserSettings.map( (piRow, piRowKey) => {
                         return (
                             <ListItem

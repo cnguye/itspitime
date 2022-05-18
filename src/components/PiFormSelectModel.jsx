@@ -9,10 +9,11 @@ function PiFormSelectModel(props) {
         formModelSelectedHandler,
         userWatchList
     } = props;
+
     return (
         <Form.Select onChange={formModelSelectedHandler} value={formModelSelected} className="form__select" aria-label="pi model list">
             {userWatchList.map(model => {
-                return (<option key={model.id} id={`form__option--${model.sku}`} disabled={model.disabled}>{model.model}</option>);
+                return (<option key={`${model.id}-${model.sku}`} id={`form__option--${model.sku}`} disabled={model.disabled}>{model.model}</option>);
             })}
         </Form.Select>
     );

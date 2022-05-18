@@ -7,7 +7,11 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 
-const Register = () => {
+const Register = (props) => {
+    const {
+        setIsRegistering,
+        setIsLoggingIn
+    } = props;
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +28,8 @@ const Register = () => {
                 password: password,
                 confPassword: confPassword
             });
+            setIsRegistering(false);
+            setIsLoggingIn(true);
             navigate("/", { replace: true });
         } catch (error) {
             if (error.response) {
@@ -36,9 +42,9 @@ const Register = () => {
         <Card className="userAuth__body">
             <Form onSubmit={Register} className="userAuth__container">
                 <p className="has-text-centered">{msg}</p>
-                <Form.Group className="mb-3" controlId="formBasic">
+                <Form.Group className="mb-3" controlId="formBasicReg">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="email" placeholder="Username" onChange={(e) => setName(e.target.value)} />
+                    <Form.Control type="text" placeholder="Username" onChange={(e) => setName(e.target.value)} />
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     <Form.Text className="text-muted">

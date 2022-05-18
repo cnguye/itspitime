@@ -36,6 +36,10 @@ html {
     flex-grow: 1;
 }
 
+.navbar-item {
+    max-width: 70px;
+}
+
 .navbar__item--menu {
     display: flex;
 }

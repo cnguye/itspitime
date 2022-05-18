@@ -10,14 +10,34 @@ import "./App.css";
 
 function App() {
     const [name, setName] = useState('');
+    const [token, setToken] = useState('');
+    const [expire, setExpire] = useState('');
+    const [isLoggingIn, setIsLogginIn] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
+
+
+    const stopProps = (e) => {
+        setIsLogginIn(false);
+        setIsRegistering(false);
+    };
+
     return (
-        <div className="App">
+        <div className="App" onClick={(e) => stopProps(e)}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={
                         <>
-                            <Navbar name={name} />
-                            <PiTimDashboard name={name} setName={setName} />
+                            <Navbar
+                                name={name}
+                                setName={setName}
+                                token={token}
+                                setToken={setToken}
+                                setExpire={setExpire}
+                                isLoggingIn={isLoggingIn}
+                                setIsLogginIn={setIsLogginIn}
+                                isRegistering={isRegistering}
+                                setIsRegistering={setIsRegistering} />
+                            <PiTimDashboard name={name} setName={setName} token={token} setToken={setToken} expire={expire} setExpire={setExpire} />
                         </>
                     } />
                 </Routes>

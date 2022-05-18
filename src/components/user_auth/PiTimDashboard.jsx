@@ -19,9 +19,15 @@ import ListGroup from "react-bootstrap/ListGroup";
 
 function PiTimDashboard(props) {
 
-    const { name, setName } = props;
-    
-    const USER_ID = 1;
+    const {
+        name,
+        setName,
+        token,
+        setToken,
+        expire,
+        setExpire
+    } = props;
+
     const DISABLE_SAVE_OVERRIDE = name !== '' ? false : true;
     const URL_SITE =
         process.env.NODE_ENV !== "production"
@@ -34,9 +40,8 @@ function PiTimDashboard(props) {
             : "https://pitim.christopherhnguyen.com/db_api";
 
     // user settings
-    const [token, setToken] = useState('');
-    const [expire, setExpire] = useState('');
     const navigate = useNavigate();
+    const [userID, setUserID] = useState();
 
     const [dbUserSettings, setDbUserSettings] = useState([]);
     const [currUserSettings, setCurrUserSettings] = useState([]);
@@ -55,6 +60,9 @@ function PiTimDashboard(props) {
 
     useEffect(() => {
         refreshToken();
+        getPiSkuModels();
+        get_pi_currencies();
+        // eslint-disable-next-line
     }, []);
 
     const refreshToken = async () => {
@@ -64,12 +72,60 @@ function PiTimDashboard(props) {
             const decoded = jwt_decode(response.data.accessToken);
             setName(decoded.name);
             setExpire(decoded.exp);
+            setUserID(decoded.userId);
+            getUserSettings();
         } catch (error) {
             if (error.response) {
                 navigate("/");
             }
         }
     };
+
+    const getPiSkuModels = async () => {
+        const response = await axios.get(`${URL_SERVER}/get_pi_skus`);
+        let data = response.data;
+        setUserWatchList(JSON.parse(JSON.stringify(data)));
+        setDbUserWatchList(JSON.parse(JSON.stringify(data)));
+        setFormSkuSelected(data[0].sku);
+        setFormModelSelected(data[0].model);
+    };
+
+    const get_pi_currencies = async () => {
+        const response = await axios.get(`${URL_SERVER}/get_pi_currencies`);
+        let data = response.data;
+        setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+        setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+    };
+
+    const getUserSettings = async () => {
+        const response = await axiosJWT.get(`${URL_SERVER}/get_user_settings`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        let data = response.data;
+        setDbUserSettings(JSON.parse(data[0].user_settings));
+        setCurrUserSettings(JSON.parse(data[0].user_settings));
+    };
+
+    const axiosJWT = axios.create();
+
+    axiosJWT.interceptors.request.use(async (config) => {
+        const currentDate = new Date();
+        if (expire * 1000 < currentDate.getTime()) {
+            const response = await axios.get(`${URL_SERVER}/token`);
+            config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+            setToken(response.data.accessToken);
+            const decoded = jwt_decode(response.data.accessToken);
+            setName(decoded.name);
+            setExpire(decoded.exp);
+        }
+        return config;
+    }, (error) => {
+        return Promise.reject(error);
+    });
+
+
 
     // fetch latest models and currencies
     useEffect(() => {
@@ -88,22 +144,22 @@ function PiTimDashboard(props) {
         }
         postData(`${URL_SITE}/get_pi_skus`)
             .then((data) => {
-                setUserWatchList(JSON.parse(JSON.stringify(data)));
-                setDbUserWatchList(JSON.parse(JSON.stringify(data)));
-                setFormSkuSelected(data[0].sku);
-                setFormModelSelected(data[0].model);
+                // setUserWatchList(JSON.parse(JSON.stringify(data)));
+                // setDbUserWatchList(JSON.parse(JSON.stringify(data)));
+                // setFormSkuSelected(data[0].sku);
+                // setFormModelSelected(data[0].model);
             });
 
-        postData(`${URL_SITE}/get_pi_currencies`)
-            .then((data) => {
-                setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-                setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-            });
+        // postData(`${URL_SITE}/get_pi_currencies`)
+        //     .then((data) => {
+        // setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+        // setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+        //     });
     }, [URL_SITE]);
 
     // fetch user settings
     useEffect(() => {
-        async function postData(url = "", user_id) {
+        async function postData(url = "", user_id = 0) {
             // Default options are marked with *
             const response = await fetch(`${url}/?user_id=${user_id}`, {
                 method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -116,13 +172,13 @@ function PiTimDashboard(props) {
             });
             return response.json(); // parses JSON response into native JavaScript objects
         }
-        postData(`${URL_SITE}/get_user_settings`, USER_ID)
+        postData(`${URL_SITE}/get_user_settings`, userID)
             .then((data) => {
                 data = data[0] !== undefined ? JSON.parse(data[0].user_settings) : [];
                 setDbUserSettings(data);
                 setCurrUserSettings(data);
             });
-    }, [URL_SITE]);
+    }, [URL_SITE, userID]);
 
     // save user settings
     const saveUserSettings = (e) => {
@@ -140,7 +196,7 @@ function PiTimDashboard(props) {
             });
             return response.json(); // parses JSON response into native JavaScript objects
         }
-        saveUserSettings(`${URL}/save_user_settings`, { user_id: 1, user_settings: currUserSettings })
+        saveUserSettings(`${URL_SITE}/save_user_settings`, { user_id: userID, user_name: name, user_settings: currUserSettings })
             .then((data) => {
                 alert("Updated user successfully!");
             });
@@ -221,7 +277,10 @@ function PiTimDashboard(props) {
 
 
     const formModelSelectedHandler = (e) => {
-        setFormSkuSelected(e.target.value);
+        const index = e.target.selectedIndex;
+        const el = e.target.childNodes[index];
+        const option =  el.getAttribute('id').split('form__option--')[1]; 
+        setFormSkuSelected(option);
         setFormModelSelected(e.target.selectedOptions[0].text);
     };
 
@@ -236,6 +295,7 @@ function PiTimDashboard(props) {
         setUserWatchList(dbUserWatchList);
         setIsListModified(false);
     };
+
     return (
         <div className="pitim__body">
             <div className="project__header">

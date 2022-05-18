@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,16 +14,23 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const Navbar = (props) => {
-    const { name } = props;
-
-    const [isLoggingIn, setIsLogginIn] = useState(false);
-    const [isRegistering, setIsRegistering] = useState(false);
+    const {
+        name,
+        setName,
+        isLoggingIn,
+        setIsLogginIn,
+        isRegistering,
+        setIsRegistering,
+        setToken,
+        setExpire
+    } = props;
 
     const navigate = useNavigate();
 
     const Logout = async () => {
         try {
             await axios.delete('http://localhost:5002/logout');
+            setName('');
             navigate("/");
         } catch (error) {
             console.log(error);
@@ -37,13 +44,19 @@ const Navbar = (props) => {
                 break;
             case 'login':
                 setIsLogginIn(true);
+                setIsRegistering(false);
                 break;
             case 'register':
                 setIsRegistering(true);
+                setIsLogginIn(false);
                 break;
             default:
             // do nothing
         }
+    };
+
+    const stopProps = (e) => {
+        e.stopPropagation();
     };
 
     return (
@@ -65,16 +78,27 @@ const Navbar = (props) => {
                     </Nav.Item>
                     :
                     <Nav.Item className="navbar__item--menu">
-                        <Nav.Item className="navbar__item">
-                            <Nav.Link eventKey="login">Login</Nav.Link>
+                        <Nav.Item className="navbar__item" onClick={(e) => stopProps(e)}>
+                            <Nav.Link eventKey="login" >Login</Nav.Link>
                             {
-                                isLoggingIn && <Login />
+                                isLoggingIn &&
+                                <Login
+                                    setName={setName}
+                                    isLoggingIn={isLoggingIn}
+                                    setIsLogginIn={setIsLogginIn}
+                                    setToken={setToken}
+                                    setExpire={setExpire}
+                                />
                             }
                         </Nav.Item>
-                        <Nav.Item className="navbar__item">
+                        <Nav.Item className="navbar__item" onClick={(e) => stopProps(e)}>
                             <Nav.Link eventKey="register">Register</Nav.Link>
                             {
-                                isRegistering && <Register />
+                                isRegistering &&
+                                <Register
+                                    setIsRegistering={setIsRegistering}
+                                    setIsLogginIn={setIsLogginIn}
+                                />
                             }
                         </Nav.Item>
 

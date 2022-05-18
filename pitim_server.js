@@ -18,7 +18,7 @@ app.listen(port, () => {
 });
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", `${process.env.PITIM_URL}`);
     next();
 });
 
@@ -50,18 +50,20 @@ app.get("/get_pi_currencies", (req, res) => {
 });
 
 app.get("/get_user_settings", (req, res) => {
-    const user_id = req.query;
+    const user_id = req.query.user_id;
     const sqlSELECTALL = "SELECT user_settings FROM pi_tim_user_settings WHERE user_id=?;";
-    db.query(sqlSELECTALL, [user_id], (err, results) => {
+    db.query(sqlSELECTALL, user_id, (err, results) => {
         res.status(200).send(results)
     });
 });
 
 app.post("/save_user_settings", (req, res) => {
+    let date = new Date();
     const user_id = req.body.user_id;
+    const user_name = req.body.user_name;
     const user_settings = JSON.stringify(req.body.user_settings);
-    const sqlUPDATE = "UPDATE pi_tim_user_settings SET user_settings=? WHERE user_id=?"
-    db.query(sqlUPDATE, [user_settings, user_id], (err, results) => {
+    const sqlUPDATE = "INSERT INTO pi_tim_user_settings (user_id, user_name, user_settings, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE user_settings=?, updatedAt=?"
+    db.query(sqlUPDATE, [user_id, user_name, user_settings, date, date, user_settings, date], (err, results) => {
         res.status(200).send(results)
     })
 })
