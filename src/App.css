@@ -8,7 +8,68 @@ html {
     height: 100%;
 }
 
+:root {
+    --fw-reg: 300;
+    --fw-bold: 900;
+    --clr-pi: rgb(230, 32, 60);
+    --clr-pi-leaf: rgb(99, 186, 70);
+    --clr-main: rgb(255, 255, 255);
+    --clr-dark: rgb(0, 0, 0);
+    --clr-accent-lite: rgba(255, 238, 0, 0.7);
+    --fs-h1: 3rem;
+    --fs-h2: 2rem;
+    --fs-h3: 1.25rem;
+    --fs-body: 1rem;
+    --bs: 0.25em 0.25em 0.75em rgba(0, 0, 0, 0.25), 0.125em 0.125em 0.25em rgba(0, 0, 0, 0.15);
+}
+
 .App {
+    margin: 0;
+}
+
+/* Navbar */
+.navbar__body {
+    padding: 0.3rem;
+}
+
+.navbar__logo {
+    flex-grow: 1;
+}
+
+.navbar__item--menu {
+    display: flex;
+}
+
+.navbar__item {
+    position: relative;
+}
+
+.navbar-item__logo {
+    max-width: 40px;
+}
+
+/* Login / Register */
+
+.userAuth__body {
+    position: absolute;
+    right: 0;
+    margin-right: 1rem;
+    z-index: 1;
+    top: 2rem;
+    min-width: 250px;
+}
+
+.userAuth__container .text-muted {
+    font-size: 0.75rem;
+}
+
+.userAuth__container {
+    padding: 1rem;
+}
+
+/* PiTim Dashboard */
+
+.pitim__body {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -96,7 +157,7 @@ html {
     .form__section--model {
         width: 400px;
     }
-    
+
     .form__section--currency {
         width: 155px;
     }
@@ -123,7 +184,7 @@ html {
 
 .pi__table--row,
 .pi__table--head {
-    font-size: 0.8rem; 
+    font-size: 0.8rem;
 }
 
 .piList__header {
@@ -180,7 +241,6 @@ html {
     right: 3px;
     top: 3px;
 }
-
 
 @media (min-width: 800px) {
     .pi__table--row,
