@@ -52,6 +52,7 @@ html {
     max-width: 40px;
 }
 
+
 /* Login / Register */
 
 .userAuth__body {
@@ -69,6 +70,10 @@ html {
 
 .userAuth__container {
     padding: 1rem;
+}
+
+.form__failure {
+    color: var(--clr-pi);
 }
 
 /* PiTim Dashboard */

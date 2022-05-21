@@ -20,7 +20,6 @@ function PiForm(props) {
         formCurrencySelectedHandler
     } = props;
 
-
     return (
         <Card className="form__body">
             <Card.Header className="form__title">Add a pi!</Card.Header>
@@ -43,7 +42,15 @@ function PiForm(props) {
                             </PiFormSelectCurrency>
                         </div>
                     </Form.Group>
-                    <Button onClick={addPiToWatchList} className="pi__form--button" variant="primary" type="submit">
+                    <Button
+                        onClick={addPiToWatchList}
+                        className="pi__form--button"
+                        variant="primary"
+                        type="submit"
+                        disabled={!(userWatchList.filter(model => {
+                            return model.disabled !== true;
+                        }).length > 0)}
+                    >
                         Add
                     </Button>
                 </Form>

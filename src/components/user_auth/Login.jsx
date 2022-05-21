@@ -45,14 +45,19 @@ const Login = (props) => {
     return (
         <Card className="userAuth__body">
             <Form onSubmit={Auth} className="userAuth__container">
-                <p className="has-text-centered">{msg}</p>
                 <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>Email or Username</Form.Label>
+                    <Form.Label>Email</Form.Label>
                     <Form.Control type="email" placeholder="Email/Username" onChange={(e) => setEmail(e.target.value)} />
+                    <Form.Text className="text-muted form__failure">
+                        {msg.includes("Email") && msg}
+                    </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                    <Form.Text className="text-muted form__failure">
+                        {msg.includes("Password") && msg}
+                    </Form.Text>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Login

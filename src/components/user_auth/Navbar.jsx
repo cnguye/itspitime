@@ -30,6 +30,7 @@ const Navbar = (props) => {
     const Logout = async () => {
         try {
             await axios.delete('http://localhost:5002/logout');
+            setToken('');
             setName('');
             navigate("/");
         } catch (error) {

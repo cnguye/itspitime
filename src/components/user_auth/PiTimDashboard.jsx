@@ -16,7 +16,6 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Accordion from "react-bootstrap/Accordion";
 import ListGroup from "react-bootstrap/ListGroup";
 
-
 function PiTimDashboard(props) {
 
     const {
@@ -59,9 +58,9 @@ function PiTimDashboard(props) {
     const [isListModified, setIsListModified] = useState(false);
 
     useEffect(() => {
-        refreshToken();
         getPiSkuModels();
         get_pi_currencies();
+        refreshToken();
         // eslint-disable-next-line
     }, []);
 
@@ -75,12 +74,14 @@ function PiTimDashboard(props) {
             setUserID(decoded.userId);
             getUserSettings();
         } catch (error) {
-            if (error.response) {
+            console.log(error);
+            if (error.response.status === 401) {
                 navigate("/");
             }
         }
-    };
+    }
 
+    // fetch latest models and currencies
     const getPiSkuModels = async () => {
         const response = await axios.get(`${URL_SERVER}/get_pi_skus`);
         let data = response.data;
@@ -125,37 +126,34 @@ function PiTimDashboard(props) {
         return Promise.reject(error);
     });
 
+    // useEffect(() => {
+    //     async function postData(url = "", data = {}) {
+    //         // Default options are marked with *
+    //         const response = await fetch(url, {
+    //             method: "GET", // *GET, POST, PUT, DELETE, etc.
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 Accept: "application/json",
+    //                 // 'Content-Type': 'application/x-www-form-urlencoded',
+    //             }
+    //             // body: JSON.stringify(data) // body data type must match "Content-Type" header 
+    //         });
+    //         return response.json(); // parses JSON response into native JavaScript objects
+    //     }
+    //     postData(`${URL_SITE}/get_pi_skus`)
+    //         .then((data) => {
+    //             // setUserWatchList(JSON.parse(JSON.stringify(data)));
+    //             // setDbUserWatchList(JSON.parse(JSON.stringify(data)));
+    //             // setFormSkuSelected(data[0].sku);
+    //             // setFormModelSelected(data[0].model);
+    //         });
 
-
-    // fetch latest models and currencies
-    useEffect(() => {
-        async function postData(url = "", data = {}) {
-            // Default options are marked with *
-            const response = await fetch(url, {
-                method: "GET", // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                }
-                // body: JSON.stringify(data) // body data type must match "Content-Type" header 
-            });
-            return response.json(); // parses JSON response into native JavaScript objects
-        }
-        postData(`${URL_SITE}/get_pi_skus`)
-            .then((data) => {
-                // setUserWatchList(JSON.parse(JSON.stringify(data)));
-                // setDbUserWatchList(JSON.parse(JSON.stringify(data)));
-                // setFormSkuSelected(data[0].sku);
-                // setFormModelSelected(data[0].model);
-            });
-
-        // postData(`${URL_SITE}/get_pi_currencies`)
-        //     .then((data) => {
-        // setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-        // setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-        //     });
-    }, [URL_SITE]);
+    //     // postData(`${URL_SITE}/get_pi_currencies`)
+    //     //     .then((data) => {
+    //     // setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+    //     // setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
+    //     //     });
+    // }, [URL_SITE]);
 
     // fetch user settings
     useEffect(() => {
@@ -279,7 +277,7 @@ function PiTimDashboard(props) {
     const formModelSelectedHandler = (e) => {
         const index = e.target.selectedIndex;
         const el = e.target.childNodes[index];
-        const option =  el.getAttribute('id').split('form__option--')[1]; 
+        const option = el.getAttribute('id').split('form__option--')[1];
         setFormSkuSelected(option);
         setFormModelSelected(e.target.selectedOptions[0].text);
     };
