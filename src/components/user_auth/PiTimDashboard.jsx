@@ -30,13 +30,13 @@ function PiTimDashboard(props) {
     } = props;
 
     const DISABLE_SAVE_OVERRIDE = name !== '' ? false : true;
-    
-    const URL_SITE =
+
+    const SITE_URL =
         process.env.NODE_ENV !== "production"
             ? `http://localhost:5001`
             : "https://pitim.christopherhnguyen.com/pitim_api";
 
-    const URL_SERVER =
+    const SERVER_URL =
         process.env.NODE_ENV !== "production"
             ? `http://localhost:5002`
             : "https://pitim.christopherhnguyen.com/db_api";
@@ -68,7 +68,7 @@ function PiTimDashboard(props) {
 
     const refreshToken = async () => {
         try {
-            const response = await axios.get(`${URL_SERVER}/token`);
+            const response = await axios.get(`${SERVER_URL}/token`);
             if (response.data.refreshToken) {
                 setToken(response.data.accessToken);
                 const decoded = jwt_decode(response.data.accessToken);
@@ -87,7 +87,7 @@ function PiTimDashboard(props) {
 
     // fetch latest models and currencies
     const getPiSkuModels = async () => {
-        const response = await axios.get(`${URL_SERVER}/get_pi_skus`);
+        const response = await axios.get(`${SERVER_URL}/get_pi_skus`);
         let data = response.data;
         setUserWatchList(JSON.parse(JSON.stringify(data)));
         setDbUserWatchList(JSON.parse(JSON.stringify(data)));
@@ -96,14 +96,14 @@ function PiTimDashboard(props) {
     };
 
     const get_pi_currencies = async () => {
-        const response = await axios.get(`${URL_SERVER}/get_pi_currencies`);
+        const response = await axios.get(`${SERVER_URL}/get_pi_currencies`);
         let data = response.data;
         setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
         setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
     };
 
     const getUserSettings = async () => {
-        const response = await axiosJWT.get(`${URL_SERVER}/get_user_settings`, {
+        const response = await axiosJWT.get(`${SERVER_URL}/get_user_settings`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -120,7 +120,7 @@ function PiTimDashboard(props) {
     axiosJWT.interceptors.request.use(async (config) => {
         const currentDate = new Date();
         if (expire * 1000 < currentDate.getTime()) {
-            const response = await axios.get(`${URL_SERVER}/token`);
+            const response = await axios.get(`${SERVER_URL}/token`);
             config.headers.Authorization = `Bearer ${response.data.accessToken}`;
             setToken(response.data.accessToken);
             const decoded = jwt_decode(response.data.accessToken);
@@ -146,7 +146,7 @@ function PiTimDashboard(props) {
     //         });
     //         return response.json(); // parses JSON response into native JavaScript objects
     //     }
-    //     postData(`${URL_SITE}/get_pi_skus`)
+    //     postData(`${SITE_URL}/get_pi_skus`)
     //         .then((data) => {
     //             // setUserWatchList(JSON.parse(JSON.stringify(data)));
     //             // setDbUserWatchList(JSON.parse(JSON.stringify(data)));
@@ -154,12 +154,12 @@ function PiTimDashboard(props) {
     //             // setFormModelSelected(data[0].model);
     //         });
 
-    //     // postData(`${URL_SITE}/get_pi_currencies`)
+    //     // postData(`${SITE_URL}/get_pi_currencies`)
     //     //     .then((data) => {
     //     // setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
     //     // setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
     //     //     });
-    // }, [URL_SITE]);
+    // }, [SITE_URL]);
 
     // fetch user settings
     useEffect(() => {
@@ -176,13 +176,13 @@ function PiTimDashboard(props) {
             });
             return response.json(); // parses JSON response into native JavaScript objects
         }
-        postData(`${URL_SITE}/get_user_settings`, userID)
+        postData(`${SITE_URL}/get_user_settings`, userID)
             .then((data) => {
                 data = data[0] !== undefined ? JSON.parse(data[0].user_settings) : [];
                 setDbUserSettings(data);
                 setCurrUserSettings(data);
             });
-    }, [URL_SITE, userID]);
+    }, [SITE_URL, userID]);
 
     // save user settings
     const saveUserSettings = (e) => {
@@ -200,7 +200,7 @@ function PiTimDashboard(props) {
             });
             return response.json(); // parses JSON response into native JavaScript objects
         }
-        saveUserSettings(`${URL_SITE}/save_user_settings`, { user_id: userID, user_name: name, user_settings: currUserSettings })
+        saveUserSettings(`${SITE_URL}/save_user_settings`, { user_id: userID, user_name: name, user_settings: currUserSettings })
             .then((data) => {
                 alert("Updated user successfully!");
             });
