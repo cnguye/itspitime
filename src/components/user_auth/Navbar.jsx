@@ -15,6 +15,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const Navbar = (props) => {
     const {
+        setUserID,
         name,
         setName,
         isLoggingIn,
@@ -25,11 +26,17 @@ const Navbar = (props) => {
         setExpire
     } = props;
 
+    const SERVER_URL =
+    process.env.NODE_ENV !== "production"
+        ? `http://localhost:5002`
+        : "https://pitim.christopherhnguyen.com/pitim_api";
+
+
     const navigate = useNavigate();
 
     const Logout = async () => {
         try {
-            await axios.delete('http://localhost:5002/logout');
+            await axios.delete(`${SERVER_URL}/logout`);
             setToken('');
             setName('');
             navigate("/");
@@ -84,6 +91,7 @@ const Navbar = (props) => {
                             {
                                 isLoggingIn &&
                                 <Login
+                                    setUserID={setUserID}
                                     setName={setName}
                                     isLoggingIn={isLoggingIn}
                                     setIsLogginIn={setIsLogginIn}

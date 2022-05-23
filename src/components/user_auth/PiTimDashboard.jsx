@@ -19,6 +19,8 @@ import ListGroup from "react-bootstrap/ListGroup";
 function PiTimDashboard(props) {
 
     const {
+        userID,
+        setUserID,
         name,
         setName,
         token,
@@ -28,6 +30,7 @@ function PiTimDashboard(props) {
     } = props;
 
     const DISABLE_SAVE_OVERRIDE = name !== '' ? false : true;
+    
     const URL_SITE =
         process.env.NODE_ENV !== "production"
             ? `http://localhost:5001`
@@ -40,7 +43,6 @@ function PiTimDashboard(props) {
 
     // user settings
     const navigate = useNavigate();
-    const [userID, setUserID] = useState();
 
     const [dbUserSettings, setDbUserSettings] = useState([]);
     const [currUserSettings, setCurrUserSettings] = useState([]);
@@ -67,19 +69,21 @@ function PiTimDashboard(props) {
     const refreshToken = async () => {
         try {
             const response = await axios.get(`${URL_SERVER}/token`);
-            setToken(response.data.accessToken);
-            const decoded = jwt_decode(response.data.accessToken);
-            setName(decoded.name);
-            setExpire(decoded.exp);
-            setUserID(decoded.userId);
-            getUserSettings();
+            if (response.data.refreshToken) {
+                setToken(response.data.accessToken);
+                const decoded = jwt_decode(response.data.accessToken);
+                setUserID(decoded.userId);
+                setName(decoded.name);
+                setExpire(decoded.exp);
+                setUserID(decoded.userId);
+                getUserSettings();
+            }
         } catch (error) {
-            console.log(error);
             if (error.response.status === 401) {
                 navigate("/");
             }
         }
-    }
+    };
 
     // fetch latest models and currencies
     const getPiSkuModels = async () => {
@@ -105,8 +109,10 @@ function PiTimDashboard(props) {
             }
         });
         let data = response.data;
-        setDbUserSettings(JSON.parse(data[0].user_settings));
-        setCurrUserSettings(JSON.parse(data[0].user_settings));
+        if (data[0] !== undefined) {
+            setDbUserSettings(JSON.parse(data[0].user_settings));
+            setCurrUserSettings(JSON.parse(data[0].user_settings));
+        }
     };
 
     const axiosJWT = axios.create();
@@ -345,7 +351,8 @@ function PiTimDashboard(props) {
             </ButtonGroup>
             {isListModified && DISABLE_SAVE_OVERRIDE &&
                 <Card className="disable_save_override" border={"danger"} bg={"light"}>
-                    <p>Sorry, saving has been disabled by the admin (me) as I figure out how to get user login to work. Feel free to mess around with the app!</p>
+                    <p>Sorry, saving has been disabled for non-logged in users. Feel free to mess around with the app!</p>
+                    <p>Registering has also been disabled.</p>
                     <p>You can find out more about me and my projects <a href="https://christopherhnguyen.com" target="_black">here</a>.</p>
                     <Accordion>
                         <Accordion.Item eventKey="0">

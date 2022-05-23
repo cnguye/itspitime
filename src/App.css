@@ -72,7 +72,19 @@ html {
     padding: 1rem;
 }
 
+.userAuth__inputgroup--validation {
+    flex-direction: column;
+}
+
+.userAuth__inputgroup--validation .userAuth__formcontrol {
+    width: 100%;
+}
+
 .form__failure {
+    color: var(--clr-pi) !important;
+}
+
+.userAuth__registerDisabled {
     color: var(--clr-pi);
 }
 

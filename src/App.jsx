@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 function App() {
+    const [userID, setUserID] = useState();
     const [name, setName] = useState('');
     const [token, setToken] = useState('');
     const [expire, setExpire] = useState('');
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/" element={
                         <>
                             <Navbar
+                                setUserID={setUserID}
                                 name={name}
                                 setName={setName}
                                 token={token}
@@ -37,7 +39,15 @@ function App() {
                                 setIsLogginIn={setIsLogginIn}
                                 isRegistering={isRegistering}
                                 setIsRegistering={setIsRegistering} />
-                            <PiTimDashboard name={name} setName={setName} token={token} setToken={setToken} expire={expire} setExpire={setExpire} />
+                            <PiTimDashboard
+                                userID={userID}
+                                setUserID={setUserID}
+                                name={name}
+                                setName={setName}
+                                token={token}
+                                setToken={setToken}
+                                expire={expire}
+                                setExpire={setExpire} />
                         </>
                     } />
                 </Routes>
