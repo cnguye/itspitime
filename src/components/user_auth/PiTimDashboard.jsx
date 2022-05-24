@@ -34,12 +34,12 @@ function PiTimDashboard(props) {
     const SITE_URL =
         process.env.NODE_ENV !== "production"
             ? `http://localhost:5001`
-            : "https://pitim.christopherhnguyen.com/pitim_api";
+            : "https://pitim.christopherhnguyen.com/db_api";
 
     const SERVER_URL =
         process.env.NODE_ENV !== "production"
             ? `http://localhost:5002`
-            : "https://pitim.christopherhnguyen.com/db_api";
+            : "https://pitim.christopherhnguyen.com/pi_api";
 
     // user settings
     const navigate = useNavigate();
@@ -65,6 +65,12 @@ function PiTimDashboard(props) {
         refreshToken();
         // eslint-disable-next-line
     }, []);
+
+    useEffect(()=> {
+        if(name !== '')
+            getUserSettings();
+        // eslint-disable-next-line
+    }, [name]);
 
     const refreshToken = async () => {
         try {
@@ -103,9 +109,9 @@ function PiTimDashboard(props) {
     };
 
     const getUserSettings = async () => {
-        const response = await axiosJWT.get(`${SERVER_URL}/get_user_settings`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+        const response = await axios.get(`${SERVER_URL}/get_user_settings`, {
+            params: {
+                user_id: userID
             }
         });
         let data = response.data;
@@ -131,58 +137,6 @@ function PiTimDashboard(props) {
     }, (error) => {
         return Promise.reject(error);
     });
-
-    // useEffect(() => {
-    //     async function postData(url = "", data = {}) {
-    //         // Default options are marked with *
-    //         const response = await fetch(url, {
-    //             method: "GET", // *GET, POST, PUT, DELETE, etc.
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 Accept: "application/json",
-    //                 // 'Content-Type': 'application/x-www-form-urlencoded',
-    //             }
-    //             // body: JSON.stringify(data) // body data type must match "Content-Type" header 
-    //         });
-    //         return response.json(); // parses JSON response into native JavaScript objects
-    //     }
-    //     postData(`${SITE_URL}/get_pi_skus`)
-    //         .then((data) => {
-    //             // setUserWatchList(JSON.parse(JSON.stringify(data)));
-    //             // setDbUserWatchList(JSON.parse(JSON.stringify(data)));
-    //             // setFormSkuSelected(data[0].sku);
-    //             // setFormModelSelected(data[0].model);
-    //         });
-
-    //     // postData(`${SITE_URL}/get_pi_currencies`)
-    //     //     .then((data) => {
-    //     // setDbCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-    //     // setCurrenciesList([{ currency: "ALL", id: 0 }, ...data]);
-    //     //     });
-    // }, [SITE_URL]);
-
-    // fetch user settings
-    useEffect(() => {
-        async function postData(url = "", user_id = 0) {
-            // Default options are marked with *
-            const response = await fetch(`${url}/?user_id=${user_id}`, {
-                method: "GET", // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                }
-                // body: JSON.stringify(data) // body data type must match "Content-Type" header 
-            });
-            return response.json(); // parses JSON response into native JavaScript objects
-        }
-        postData(`${SITE_URL}/get_user_settings`, userID)
-            .then((data) => {
-                data = data[0] !== undefined ? JSON.parse(data[0].user_settings) : [];
-                setDbUserSettings(data);
-                setCurrUserSettings(data);
-            });
-    }, [SITE_URL, userID]);
 
     // save user settings
     const saveUserSettings = (e) => {

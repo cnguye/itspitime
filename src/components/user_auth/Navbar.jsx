@@ -29,7 +29,7 @@ const Navbar = (props) => {
     const SERVER_URL =
     process.env.NODE_ENV !== "production"
         ? `http://localhost:5002`
-        : "https://pitim.christopherhnguyen.com/pitim_api";
+        : "https://pitim.christopherhnguyen.com/pi_api";
 
 
     const navigate = useNavigate();
@@ -97,6 +97,7 @@ const Navbar = (props) => {
                                     setIsLogginIn={setIsLogginIn}
                                     setToken={setToken}
                                     setExpire={setExpire}
+                                    getUserSettings
                                 />
                             }
                         </Nav.Item>
