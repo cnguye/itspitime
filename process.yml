@@ -1,5 +1,5 @@
 apps:
-        - script: './script_server.js'
+        - script: './pitim_server.js'
           exec_mode: 'fork'
           name: 'script_worker-0'
           env:

@@ -66,9 +66,13 @@ function PiTimDashboard(props) {
         // eslint-disable-next-line
     }, []);
 
-    useEffect(()=> {
-        if(name !== '')
+    useEffect(() => {
+        if (name !== '' && userID !== false)
             getUserSettings();
+        else {
+            setDbUserSettings([]);
+            setCurrUserSettings([]);
+        }
         // eslint-disable-next-line
     }, [name]);
 
@@ -305,7 +309,7 @@ function PiTimDashboard(props) {
             </ButtonGroup>
             {isListModified && DISABLE_SAVE_OVERRIDE &&
                 <Card className="disable_save_override" border={"danger"} bg={"light"}>
-                    <p>Sorry, saving has been disabled for non-logged in users. Feel free to mess around with the app!</p>
+                    <p>Sorry, saving has been disabled for unregistered users. Feel free to mess around with the app!</p>
                     <p>Registering has also been disabled.</p>
                     <p>You can find out more about me and my projects <a href="https://christopherhnguyen.com" target="_black">here</a>.</p>
                     <Accordion>
