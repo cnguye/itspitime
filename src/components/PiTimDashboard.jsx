@@ -295,6 +295,7 @@ function PiTimDashboard(props) {
         // setCurrBlacklist(dbUserSettings.blacklist);
         setCurrUserSettings(dbUserSettings);
         setUserWatchlist(dbuserWatchlist);
+        setCurrBlacklist(dbUserSettings.blacklist);
         setIsListModified(false);
     };
 
