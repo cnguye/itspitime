@@ -4,10 +4,11 @@ import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 
 // import pitim logo
-import piTimLogo from '../../assets/pitim_target.png';
+import piTimLogo from '../assets/pitim_target.png';
 
-import PiList from "../PiList";
-import PiForm from "../PiForm";
+import PiList from "./PiList/PiList";
+import PiBlacklist from "./PiBlacklist/PiBlacklist";
+import PiForm from "./PiForm/PiForm";
 
 // import bootstrap components
 import Card from "react-bootstrap/Card";
@@ -58,6 +59,7 @@ function PiTimDashboard(props) {
     const [formModelSelected, setFormModelSelected] = useState("");
     const [formCurrencySelected, setFormCurrencySelected] = useState("ALL");
     const [isListModified, setIsListModified] = useState(false);
+    const [currBlacklist, setCurrBlacklist] = useState([]);
 
     useEffect(() => {
         getPiSkuModels();
@@ -75,6 +77,11 @@ function PiTimDashboard(props) {
         }
         // eslint-disable-next-line
     }, [name]);
+
+    useEffect(() => {
+        
+        // eslint-disable-next-line
+    }, [currBlacklist]);
 
     const refreshToken = async () => {
         try {
@@ -114,6 +121,9 @@ function PiTimDashboard(props) {
 
     const getUserSettings = async () => {
         const response = await axios.get(`${SERVER_URL}/get_user_settings`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
             params: {
                 user_id: userID
             }
@@ -279,6 +289,12 @@ function PiTimDashboard(props) {
                 formModelSelectedHandler={formModelSelectedHandler}
                 formCurrencySelectedHandler={formCurrencySelectedHandler}
             />
+            <PiBlacklist
+                dbBlacklist={currUserSettings.blacklist}
+                currBlacklist={currBlacklist}
+                setCurrBlacklist={setCurrBlacklist}
+                setIsListModified={setIsListModified}
+            />
             <PiList
                 currUserSettings={currUserSettings}
                 setCurrUserSettings={setCurrUserSettings}
@@ -331,6 +347,14 @@ function PiTimDashboard(props) {
                                     >
                                         <div className="ms-2 me-auto">
                                             <div className="fw-bold">Blacklist sites</div>
+                                        </div>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item
+                                        as="li"
+                                        className="d-flex justify-content-between align-items-start disable_save_override--list-group"
+                                    >
+                                        <div className="ms-2 me-auto">
+                                            <div className="fw-bold">Optimization with advanced React Hooks</div>
                                         </div>
                                     </ListGroup.Item>
                                 </ListGroup>

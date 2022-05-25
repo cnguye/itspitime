@@ -52,6 +52,15 @@ html {
     max-width: 40px;
 }
 
+.pi__section {
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.pi__section--card {
+    margin: 2rem 0;
+    padding: 0.7rem;
+}
 
 /* Login / Register */
 
@@ -64,8 +73,9 @@ html {
     min-width: 250px;
 }
 
-.userAuth__container .text-muted {
+ .form-text-muted {
     font-size: 0.75rem;
+    color: var(--clr-pi) ;
 }
 
 .userAuth__container {
@@ -80,12 +90,49 @@ html {
     width: 100%;
 }
 
-.form__failure {
-    color: var(--clr-pi) !important;
+.form-text-muted {
+    color: var(--clr-pi);
 }
 
 .userAuth__registerDisabled {
     color: var(--clr-pi);
+}
+
+/* PiTim Blacklist */
+
+.blacklist__list {
+    margin: 0.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
+}
+
+.websiteItem__container {
+    display: flex;
+}
+
+.websiteItem__container + .websiteItem__container {
+    margin-left: 0.5rem;
+}
+
+.websiteItem__button--edit {
+    padding: 0.1rem 0.65rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.websiteItem__button--delete {
+    font-size: 0.7rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.listItem__container {
+    display: flex;
+}
+
+.blacklist__input.invalid_input {
+    border: 1px solid var(--clr-pi);
 }
 
 /* PiTim Dashboard */
@@ -118,6 +165,11 @@ html {
     font-size: 1rem;
 }
 
+.pi__section--title {
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+}
+
 @media (min-width: 800px) {
     .project__logo {
         width: 10%;
@@ -134,18 +186,6 @@ html {
 }
 
 /* Pi form */
-
-.form__body {
-    width: 100%;
-    margin: 2rem 0;
-    padding: 0.7rem;
-}
-
-.form__title {
-    font-size: 1.4rem;
-    margin-right: 1rem;
-    line-height: 1.4rem;
-}
 
 .form__section {
     margin: 5px 0;

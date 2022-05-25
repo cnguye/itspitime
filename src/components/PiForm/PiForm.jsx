@@ -21,8 +21,8 @@ function PiForm(props) {
     } = props;
 
     return (
-        <Card className="form__body">
-            <Card.Header className="form__title">Add a pi!</Card.Header>
+        <Card className="pi__section form__body">
+            <Card.Header className="pi__section--title form__title">Add a pi!</Card.Header>
             <Card.Body>
                 <Form className="pi__form">
                     <Form.Group className="form__group" controlId="formAddPi">

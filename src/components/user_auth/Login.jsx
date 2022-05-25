@@ -78,7 +78,7 @@ const Login = (props) => {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-                        <Form.Text className="text-muted form__failure">
+                        <Form.Text className="form-text-muted form__failure">
                             {msg.includes("Email") && msg}
                         </Form.Text>
                         <Form.Control.Feedback type="invalid">
@@ -96,7 +96,7 @@ const Login = (props) => {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
-                        <Form.Text className="text-muted form__failure">
+                        <Form.Text className="form-text-muted form__failure">
                             {msg.includes("Password") && msg}
                         </Form.Text>
                         <Form.Control.Feedback type="invalid">

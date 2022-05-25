@@ -38,7 +38,7 @@ function PiList(props) {
     };
 
     return (
-        <div className="piList__body">
+        <div className="pi__section pi__section--card piList__body">
             <div className="piList__header">
                 <div className="piList__header--title">
                     Watch list

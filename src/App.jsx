@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/user_auth/Navbar";
-import PiTimDashboard from "./components/user_auth/PiTimDashboard";
+import PiTimDashboard from "./components/PiTimDashboard";
 
 // Bootstrap css
 import "bootstrap/dist/css/bootstrap.min.css";
