@@ -359,7 +359,7 @@ function PiTimDashboard(props) {
                     <p>Sorry, saving has been disabled for unregistered users. Feel free to mess around with the app!</p>
                     <p>Registering has also been disabled.</p>
                     <p>You can find out more about me and my projects <a href="https://christopherhnguyen.com" target="_black">here</a>.</p>
-                    <Accordion>
+                    <Accordion className="project-timeline__container">
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Project timeline:</Accordion.Header>
                             <Accordion.Body>
@@ -369,7 +369,7 @@ function PiTimDashboard(props) {
                                         className="d-flex justify-content-between align-items-start disable_save_override--list-group"
                                     >
                                         <div className="ms-2 me-auto">
-                                            <div className="fw-bold">User login and authentication</div>
+                                            <div className="fw-bold project-timeline--item done">User login and authentication</div>
                                         </div>
                                     </ListGroup.Item>
                                     <ListGroup.Item
@@ -377,7 +377,7 @@ function PiTimDashboard(props) {
                                         className="d-flex justify-content-between align-items-start disable_save_override--list-group"
                                     >
                                         <div className="ms-2 me-auto">
-                                            <div className="fw-bold">Blacklist sites</div>
+                                            <div className="fw-bold project-timeline--item done">Blacklist sites</div>
                                         </div>
                                     </ListGroup.Item>
                                     <ListGroup.Item
@@ -385,7 +385,15 @@ function PiTimDashboard(props) {
                                         className="d-flex justify-content-between align-items-start disable_save_override--list-group"
                                     >
                                         <div className="ms-2 me-auto">
-                                            <div className="fw-bold">Optimization with advanced React Hooks</div>
+                                            <div className="fw-bold project-timeline--item">Google captcha on register</div>
+                                        </div>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item
+                                        as="li"
+                                        className="d-flex justify-content-between align-items-start disable_save_override--list-group"
+                                    >
+                                        <div className="ms-2 me-auto">
+                                            <div className="fw-bold project-timeline--item">Optimization with advanced React Hooks</div>
                                         </div>
                                     </ListGroup.Item>
                                 </ListGroup>

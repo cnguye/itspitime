@@ -352,6 +352,11 @@ html {
     text-align: left;
 }
 
+.project-timeline--item.done {
+    color: var(--clr-pi);
+    text-decoration: line-through;
+}
+
 @media (min-width: 800px) {
     .disable_save_override {
         margin-top: 1rem;
