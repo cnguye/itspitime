@@ -4,7 +4,8 @@ import BlacklistListItem from './BlacklistListItem';
 function BlacklistList(props) {
     const {
         currBlacklist,
-        setCurrBlacklist
+        setCurrBlacklist,
+        setIsListModified
     } = props;
 
     return (
@@ -15,6 +16,7 @@ function BlacklistList(props) {
                     website={website}
                     currBlacklist={currBlacklist}
                     setCurrBlacklist={setCurrBlacklist}
+                    setIsListModified={setIsListModified}
                 />;
             })}
         </div>

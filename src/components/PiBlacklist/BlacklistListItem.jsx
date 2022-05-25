@@ -13,7 +13,8 @@ function BlacklistListItem(props) {
     const {
         website,
         currBlacklist,
-        setCurrBlacklist
+        setCurrBlacklist,
+        setIsListModified
     } = props;
 
     const [isEdittingSite, setIsEdittingSite] = useState(false);
@@ -44,14 +45,15 @@ function BlacklistListItem(props) {
             setIsContainsInvalidChars(true);
             return;
         }
-        console.log("hello input handler");
         let tempSiteInput = stripWhiteSpaces(e.target.value);
         setIsContainsInvalidChars(false);
+        setIsListModified(true);
         setTempWebsite(tempSiteInput);
     };
 
     const siteInputEnterKeyHandler = (e) => {
         if (e.key === 'Enter') {
+            setIsListModified(true);
             setTempWebsite(e.target.value + " ");
         }
     };
@@ -70,6 +72,7 @@ function BlacklistListItem(props) {
             }).sort()
         );
         setIsEdittingSite(false);
+        setIsListModified(true);
     };
 
     const cancelEditSite = (e) => {
@@ -87,6 +90,7 @@ function BlacklistListItem(props) {
         );
         setTempWebsite('');
         setIsEdittingSite(false);
+        setIsListModified(true);
     };
 
     return (

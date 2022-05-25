@@ -17,7 +17,7 @@ function ListItem(props) {
         setCurrUserSettings,
         currUserSettings,
         setIsListModified,
-        userWatchList,
+        userWatchlist,
         currenciesList,
         edittingRowIndex,
         setEdittingRowIndex,
@@ -30,9 +30,12 @@ function ListItem(props) {
 
     const removePiHandler = () => {
         setCurrUserSettings(
-            currUserSettings.filter((row) => {
-                return !(row.sku === sku && row.currencies === currencies);
-            })
+            {
+                blacklist: currUserSettings.blacklist,
+                watchlist: currUserSettings.watchlist.filter((row) => {
+                    return !(row.sku === sku && row.currencies === currencies);
+                })
+            }
         );
         setIsListModified(true);
     };
@@ -41,24 +44,29 @@ function ListItem(props) {
         setIsEditting(true);
         setEdittingRowIndex(piRowKey);
         setEdiSkuSelected(sku);
-        setEditModelSelected(currUserSettings[piRowKey].model);
-        setEditCurrenciesSelected(currUserSettings[piRowKey].currencies);
+        setEditModelSelected(currUserSettings.watchlist[piRowKey].model);
+        setEditCurrenciesSelected(currUserSettings.watchlist[piRowKey].currencies);
     };
 
     const saveEditRowHandler = (e) => {
         setIsEditting(false);
-        setCurrUserSettings(currUserSettings.map((piRowSetting, piRowSettingKey) => {
-            if (piRowSettingKey === piRowKey) {
-                if(piRowSetting.model !== editModelSelected || piRowSetting.currencies !== editCurrenciesSelected){
-                    setIsListModified(true);
-                    if(editCurrenciesSelected.includes("ALL"))
-                        return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: ["ALL"] };
-                    else
-                        return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: editCurrenciesSelected };
-                }
+        setCurrUserSettings(
+            {
+                blacklist: currUserSettings.blacklist,
+                watchlist: currUserSettings.watchlist.map((piRowSetting, piRowSettingKey) => {
+                    if (piRowSettingKey === piRowKey) {
+                        if (piRowSetting.model !== editModelSelected || piRowSetting.currencies !== editCurrenciesSelected) {
+                            setIsListModified(true);
+                            if (editCurrenciesSelected.includes("ALL"))
+                                return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: ["ALL"] };
+                            else
+                                return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: editCurrenciesSelected };
+                        }
+                    }
+                    return piRowSetting;
+                })
             }
-            return piRowSetting;
-        }));
+        );
     };
 
     const cancelEditRowHandler = (e) => {
@@ -73,7 +81,7 @@ function ListItem(props) {
                 {
                     isEditting && edittingRowIndex === piRowKey ?
                         <PiFormEditModel
-                            userWatchList={userWatchList}
+                            userWatchlist={userWatchlist}
                             editModelSelected={editModelSelected}
                             setEdiSkuSelected={setEdiSkuSelected}
                             setEditModelSelected={setEditModelSelected}

@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 
 function PiFormEditModel(props) {
     const {
-        userWatchList,
+        userWatchlist,
         editModelSelected,
         setEdiSkuSelected,
         setEditModelSelected
@@ -21,7 +21,7 @@ function PiFormEditModel(props) {
 
     return (
         <Form.Select onChange={skuAndModelHandler} value={editModelSelected} className="form__select" aria-label="pi model list">
-            {userWatchList.map(model => {
+            {userWatchlist.map(model => {
                 return (
                     <option
                         key={model.id}

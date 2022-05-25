@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import BlacklistList from './BlacklistList';
 import BlacklistForm from './BlacklistForm';
 
@@ -7,18 +7,12 @@ import Card from 'react-bootstrap/Card';
 
 function PiBlacklist(props) {
     const {
-        dbBlacklist,
         currBlacklist,
         setCurrBlacklist,
         setIsListModified
     } = props;
     const [isSiteDuplicate, setIsSiteDuplicate] = useState(false);
     const [isInvalidSite, setIsInvalidSite] = useState(false);
-
-    useEffect( () => {
-        setIsListModified(true);
-        // eslint-disable-next-line
-    }, [currBlacklist])
 
     return (
         <Card className="pi__section">
@@ -27,6 +21,7 @@ function PiBlacklist(props) {
                 <BlacklistList
                     currBlacklist={currBlacklist}
                     setCurrBlacklist={setCurrBlacklist}
+                    setIsListModified={setIsListModified}
                 />
                 <BlacklistForm
                     currBlacklist={currBlacklist}
@@ -35,6 +30,7 @@ function PiBlacklist(props) {
                     setIsSiteDuplicate={setIsSiteDuplicate}
                     isInvalidSite={isInvalidSite}
                     setIsInvalidSite={setIsInvalidSite}
+                    setIsListModified={setIsListModified}
                 />
             </Card.Body>
         </Card>

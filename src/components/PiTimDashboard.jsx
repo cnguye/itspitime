@@ -45,12 +45,18 @@ function PiTimDashboard(props) {
     // user settings
     const navigate = useNavigate();
 
-    const [dbUserSettings, setDbUserSettings] = useState([]);
-    const [currUserSettings, setCurrUserSettings] = useState([]);
+    const [dbUserSettings, setDbUserSettings] = useState({
+        blacklist: [],
+        watchlist: []
+    });
+    const [currUserSettings, setCurrUserSettings] = useState({
+        blacklist: [],
+        watchlist: []
+    });
 
     // get existing models and currencies from database
-    const [dbUserWatchList, setDbUserWatchList] = useState([]);
-    const [userWatchList, setUserWatchList] = useState([]);
+    const [dbuserWatchlist, setDbuserWatchlist] = useState([]);
+    const [userWatchlist, setUserWatchlist] = useState([]);
     const [dbCurrenciesList, setDbCurrenciesList] = useState([]);
     const [currenciesList, setCurrenciesList] = useState([]);
 
@@ -72,16 +78,18 @@ function PiTimDashboard(props) {
         if (name !== '' && userID !== false)
             getUserSettings();
         else {
-            setDbUserSettings([]);
-            setCurrUserSettings([]);
+            setDbUserSettings({
+                blacklist: [],
+                watchlist: []
+            });
+            setCurrUserSettings({
+                blacklist: [],
+                watchlist: []
+            });
+            setCurrBlacklist([]);
         }
         // eslint-disable-next-line
     }, [name]);
-
-    useEffect(() => {
-        
-        // eslint-disable-next-line
-    }, [currBlacklist]);
 
     const refreshToken = async () => {
         try {
@@ -106,8 +114,8 @@ function PiTimDashboard(props) {
     const getPiSkuModels = async () => {
         const response = await axios.get(`${SERVER_URL}/get_pi_skus`);
         let data = response.data;
-        setUserWatchList(JSON.parse(JSON.stringify(data)));
-        setDbUserWatchList(JSON.parse(JSON.stringify(data)));
+        setUserWatchlist(JSON.parse(JSON.stringify(data)));
+        setDbuserWatchlist(JSON.parse(JSON.stringify(data)));
         setFormSkuSelected(data[0].sku);
         setFormModelSelected(data[0].model);
     };
@@ -129,9 +137,10 @@ function PiTimDashboard(props) {
             }
         });
         let data = response.data;
-        if (data[0] !== undefined) {
+        if (data[0] != null) {
             setDbUserSettings(JSON.parse(data[0].user_settings));
             setCurrUserSettings(JSON.parse(data[0].user_settings));
+            setCurrBlacklist(JSON.parse(data[0].user_settings).blacklist);
         }
     };
 
@@ -168,35 +177,50 @@ function PiTimDashboard(props) {
             });
             return response.json(); // parses JSON response into native JavaScript objects
         }
-        saveUserSettings(`${SITE_URL}/save_user_settings`, { user_id: userID, user_name: name, user_settings: currUserSettings })
-            .then((data) => {
+        saveUserSettings(`${SITE_URL}/save_user_settings`, { 
+            user_id: userID, 
+            user_name: name, 
+            user_settings: { 
+                blacklist: currBlacklist, 
+                watchlist: currUserSettings.watchlist 
+            }
+        }).then((data) => {
                 alert("Updated user successfully!");
             });
     };
 
     // update form list
     useEffect(() => {
-        let temp_dbUserWatchList = JSON.parse(JSON.stringify(dbUserWatchList));
-        setUserWatchList(temp_dbUserWatchList.map((model) => {
-            currUserSettings.forEach(userRow => {
+        let temp_dbuserWatchlist = JSON.parse(JSON.stringify(dbuserWatchlist));
+        setUserWatchlist(temp_dbuserWatchlist.map((model) => {
+            currUserSettings.watchlist.forEach(userRow => {
                 if (userRow.sku === model.sku && (userRow.currencies.includes('ALL') || userRow.currencies.length === (dbCurrenciesList.length))) {
                     model.disabled = true;
                 }
             });
             return model;
         }));
-    }, [dbCurrenciesList.length, dbUserWatchList, currUserSettings]);
+    }, [dbCurrenciesList.length, dbuserWatchlist, currUserSettings]);
 
     // Set next available model as pre-selected model after user adds a model
+    // only changes to first available model if pre-selected model runs out of currencies to watch
     useEffect(() => {
-        for (let i = 0; i < userWatchList.length; i++) {
-            if (!userWatchList[i].disabled) {
-                setFormSkuSelected(userWatchList[i].sku);
-                setFormModelSelected(userWatchList[i].model);
-                break;
+        let selectFirstModel = true;
+        for (let i = 0; i < userWatchlist.length; i++) {
+            if (userWatchlist[i].sku === formSkuSelected && !userWatchlist[i].disabled)
+                selectFirstModel = false;
+        }
+        if (selectFirstModel) {
+            for (let i = 0; i < userWatchlist.length; i++) {
+                if (!userWatchlist[i].disabled) {
+                    setFormSkuSelected(userWatchlist[i].sku);
+                    setFormModelSelected(userWatchlist[i].model);
+                    break;
+                }
             }
         }
-    }, [userWatchList]);
+        // eslint-disable-next-line
+    }, [userWatchlist]);
 
     // Set next available currency as pre-selected model after user adds a model
     useEffect(() => {
@@ -206,11 +230,11 @@ function PiTimDashboard(props) {
                 break;
             }
         }
-    }, [currenciesList, userWatchList]);
+    }, [currenciesList, userWatchlist]);
 
     // filter form currencies for what is available to add to the watchlist
     useEffect(() => {
-        let currUserSettingsSku = currUserSettings[currUserSettings.findIndex(row => row.sku === formSkuSelected)];
+        let currUserSettingsSku = currUserSettings.watchlist[currUserSettings.watchlist.findIndex(row => row.sku === formSkuSelected)];
         let currentCurrencies = currUserSettingsSku !== undefined ? currUserSettingsSku.currencies : [];
         setCurrenciesList(dbCurrenciesList.map((currency) => {
             if (currentCurrencies.includes(currency.currency)) {
@@ -222,31 +246,36 @@ function PiTimDashboard(props) {
         }));
     }, [currUserSettings, dbCurrenciesList, formSkuSelected]);
 
-    const addPiToWatchList = (e) => {
+    const addPiToWatchlist = (e) => {
         e.preventDefault();
         setIsListModified(true);
-        if (!currUserSettings.filter((row) => {
+        if (!currUserSettings.watchlist.filter((row) => {
             return row.sku === formSkuSelected;
         }).length > 0) {
-            setCurrUserSettings([
-                ...currUserSettings, {
-                    sku: formSkuSelected,
-                    model: formModelSelected,
-                    currencies: [formCurrencySelected]
-                }
-            ]);
+            setCurrUserSettings({
+                blacklist: currUserSettings.blacklist,
+                watchlist: [
+                    ...currUserSettings.watchlist, {
+                        sku: formSkuSelected,
+                        model: formModelSelected,
+                        currencies: [formCurrencySelected]
+                    }
+                ]
+            });
         } else {
-            setCurrUserSettings(currUserSettings.map((row) => {
-                if (row.sku === formSkuSelected) {
-                    if (formCurrencySelected === "ALL")
-                        return { ...row, currencies: ["ALL"] };
-                    return { ...row, currencies: [...row.currencies, formCurrencySelected] };
-                }
-                return row;
-            }));
+            setCurrUserSettings({
+                blacklist: currUserSettings.blacklist,
+                watchlist: currUserSettings.watchlist.map((row) => {
+                    if (row.sku === formSkuSelected) {
+                        if (formCurrencySelected === "ALL")
+                            return { ...row, currencies: ["ALL"] };
+                        return { ...row, currencies: [...row.currencies, formCurrencySelected] };
+                    }
+                    return row;
+                })
+            });
         }
     };
-
 
     const formModelSelectedHandler = (e) => {
         const index = e.target.selectedIndex;
@@ -263,8 +292,9 @@ function PiTimDashboard(props) {
     // reset user settings to current database user settings
     const resetUserSettings = (e) => {
         e.preventDefault();
+        // setCurrBlacklist(dbUserSettings.blacklist);
         setCurrUserSettings(dbUserSettings);
-        setUserWatchList(dbUserWatchList);
+        setUserWatchlist(dbuserWatchlist);
         setIsListModified(false);
     };
 
@@ -281,16 +311,16 @@ function PiTimDashboard(props) {
                 </h3>
             </div>
             <PiForm
-                addPiToWatchList={addPiToWatchList}
-                userWatchList={userWatchList}
+                addPiToWatchlist={addPiToWatchlist}
+                userWatchlist={userWatchlist}
                 currenciesList={currenciesList}
                 setCurrenciesList={setCurrenciesList}
                 formModelSelected={formModelSelected}
                 formModelSelectedHandler={formModelSelectedHandler}
+                formCurrencySelected={formCurrencySelected}
                 formCurrencySelectedHandler={formCurrencySelectedHandler}
             />
             <PiBlacklist
-                dbBlacklist={currUserSettings.blacklist}
                 currBlacklist={currBlacklist}
                 setCurrBlacklist={setCurrBlacklist}
                 setIsListModified={setIsListModified}
@@ -302,8 +332,8 @@ function PiTimDashboard(props) {
                 setIsListModified={setIsListModified}
                 formModelSelectedHandler={formModelSelectedHandler}
                 formCurrencySelectedHandler={formCurrencySelectedHandler}
-                userWatchList={userWatchList}
-                setUserWatchList={setUserWatchList}
+                userWatchlist={userWatchlist}
+                setUserWatchlist={setUserWatchlist}
             />
             <ButtonGroup className="project__footer">
                 <Button onClick={saveUserSettings}
@@ -312,7 +342,7 @@ function PiTimDashboard(props) {
                     disabled={!isListModified || DISABLE_SAVE_OVERRIDE}
                     type="submit"
                 >
-                    Save Watchlist
+                    Save watchlist
                 </Button>
                 <Button onClick={resetUserSettings}
                     className="cancelSettings__btn"

@@ -12,7 +12,8 @@ function BlacklistForm(props) {
         isSiteDuplicate,
         setIsSiteDuplicate,
         isInvalidSite,
-        setIsInvalidSite
+        setIsInvalidSite,
+        setIsListModified
     } = props;
 
     const [siteInput, setSiteInput] = useState('');
@@ -33,6 +34,7 @@ function BlacklistForm(props) {
                 else {
                     setCurrBlacklist([...currBlacklist, tempSiteInput].sort());
                     setSiteInput('');
+                    setIsListModified(true);
                     setIsSiteDuplicate(false);
                     setIsInvalidSite(false);
                 }

@@ -17,7 +17,7 @@ function PiList(props) {
         setIsListModified,
         formModelSelectedHandler,
         formCurrencySelectedHandler,
-        userWatchList,
+        userWatchlist,
         setUserWatchList
     } = props;
     const [watchListRefreshTimeLeft, setWatchListRefreshTimeLeft] = useState(0);
@@ -67,7 +67,7 @@ function PiList(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {currUserSettings.map( (piRow, piRowKey) => {
+                    {currUserSettings.watchlist.map( (piRow, piRowKey) => {
                         return (
                             <ListItem
                                 key={`${piRow.sku}-${piRow.currencies}`}
@@ -84,7 +84,7 @@ function PiList(props) {
                                 setIsListModified={setIsListModified}
                                 formModelSelectedHandler={formModelSelectedHandler}
                                 formCurrencySelectedHandler={formCurrencySelectedHandler}
-                                userWatchList={userWatchList}
+                                userWatchlist={userWatchlist}
                                 setUserWatchList={setUserWatchList}
                             />
                         );

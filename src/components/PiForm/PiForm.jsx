@@ -12,11 +12,12 @@ import Card from 'react-bootstrap/Card';
 function PiForm(props) {
 
     const {
-        addPiToWatchList,
-        userWatchList,
+        addPiToWatchlist,
+        userWatchlist,
         currenciesList,
         formModelSelected,
         formModelSelectedHandler,
+        formCurrencySelected,
         formCurrencySelectedHandler
     } = props;
 
@@ -31,23 +32,25 @@ function PiForm(props) {
                             <PiFormSelectModel
                                 formModelSelected={formModelSelected}
                                 formModelSelectedHandler={formModelSelectedHandler}
-                                userWatchList={userWatchList}>
+                                userWatchlist={userWatchlist}>
                             </PiFormSelectModel>
                         </div>
                         <div className="form__section form__section--currency">
                             <Form.Label className="form__label">Currency</Form.Label>
                             <PiFormSelectCurrency
                                 formCurrencySelectedHandler={formCurrencySelectedHandler}
-                                currenciesList={currenciesList}>
+                                currenciesList={currenciesList}
+                                formCurrencySelected={formCurrencySelected}
+                            >
                             </PiFormSelectCurrency>
                         </div>
                     </Form.Group>
                     <Button
-                        onClick={addPiToWatchList}
+                        onClick={addPiToWatchlist}
                         className="pi__form--button"
                         variant="primary"
                         type="submit"
-                        disabled={!(userWatchList.filter(model => {
+                        disabled={!(userWatchlist.filter(model => {
                             return model.disabled !== true;
                         }).length > 0)}
                     >
