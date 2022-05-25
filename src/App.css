@@ -30,14 +30,13 @@ html {
 /* Navbar */
 .navbar__body {
     padding: 0.3rem;
-}
-
-.navbar__logo {
-    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
 }
 
 .navbar-item {
-    max-width: 70px;
+    display: inline-block;
+    height: 100%;
 }
 
 .navbar__item--menu {

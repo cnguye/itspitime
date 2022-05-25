@@ -70,7 +70,7 @@ const Navbar = (props) => {
     return (
         <Nav className="navbar__body" aria-label="main navigation" onSelect={navBarSelectHandler}>
             <Nav.Item className="navbar__item navbar__logo">
-                <Nav.Link className="navbar-item" href="https:christopherhnguyen.com">
+                <Nav.Link className="navbar-item" rel="noreferrer" target="_blank" href="https://christopherhnguyen.com">
                     <img className="navbar-item__logo" src={ceenLogo} alt="logo" />
                 </Nav.Link>
             </Nav.Item>
