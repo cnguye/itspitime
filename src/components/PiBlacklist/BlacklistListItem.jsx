@@ -52,13 +52,16 @@ function BlacklistListItem(props) {
     };
 
     const siteInputEnterKeyHandler = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' || e.which === 13 || e.keyCode === 13) {
             setIsListModified(true);
-            setTempWebsite(e.target.value + " ");
+            if (!isContainsInvalidChars && !isSiteDuplicate && !isInvalidSite){
+                saveEditSite();
+            }
         }
     };
 
     const editBlacklistItem = (e) => {
+        e.preventDefault();
         setIsEdittingSite(true);
         setTempWebsite(website);
     };
@@ -99,7 +102,7 @@ function BlacklistListItem(props) {
         >
             {isEdittingSite ?
                 <div className="listItem__container">
-                    <Form onSubmit={siteInputEnterKeyHandler}>
+                    <Form onSubmit={(e) => e.preventDefault()}>
                         <InputGroup>
                             <Form.Control
                                 type="text"
@@ -107,6 +110,7 @@ function BlacklistListItem(props) {
                                 className={`blacklist__input  ${isContainsInvalidChars || isSiteDuplicate || isInvalidSite ? 'invalid_input' : ""}`}
                                 onChange={siteInputHandler}
                                 value={tempWebsite}
+                                onKeyDown={siteInputEnterKeyHandler}
                             />
                         </InputGroup>
                     </Form>

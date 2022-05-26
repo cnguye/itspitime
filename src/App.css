@@ -362,3 +362,7 @@ html {
         width: 60%;
     }
 }
+
+.svg-inline--fa {
+    pointer-events: none;
+}
