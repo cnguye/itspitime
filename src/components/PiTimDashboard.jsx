@@ -385,7 +385,23 @@ function PiTimDashboard(props) {
                                         className="d-flex justify-content-between align-items-start disable_save_override--list-group"
                                     >
                                         <div className="ms-2 me-auto">
-                                            <div className="fw-bold project-timeline--item">Google captcha on register</div>
+                                            <div className="fw-bold project-timeline--item done">Google ReCaptcha v2</div>
+                                        </div>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item
+                                        as="li"
+                                        className="d-flex justify-content-between align-items-start disable_save_override--list-group"
+                                    >
+                                        <div className="ms-2 me-auto">
+                                            <div className="fw-bold project-timeline--item">Custom Telegram bots for actual users</div>
+                                        </div>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item
+                                        as="li"
+                                        className="d-flex justify-content-between align-items-start disable_save_override--list-group"
+                                    >
+                                        <div className="ms-2 me-auto">
+                                            <div className="fw-bold project-timeline--item">Google ReCaptcha Enterprise</div>
                                         </div>
                                     </ListGroup.Item>
                                     <ListGroup.Item
