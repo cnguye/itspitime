@@ -19,17 +19,17 @@ const Navbar = (props) => {
         name,
         setName,
         isLoggingIn,
-        setIsLogginIn,
+        setIsLoggingIn,
         isRegistering,
         setIsRegistering,
         setToken,
-        setExpire
+        setExpire,
     } = props;
 
     const SERVER_URL =
-    process.env.NODE_ENV !== "production"
-        ? `http://localhost:5002`
-        : "https://pitim.christopherhnguyen.com/pi_api";
+        process.env.NODE_ENV !== "production"
+            ? `http://localhost:5002`
+            : "https://pitim.christopherhnguyen.com/pi_api";
 
 
     const navigate = useNavigate();
@@ -51,22 +51,19 @@ const Navbar = (props) => {
                 Logout();
                 break;
             case 'login':
-                setIsLogginIn(true);
+                setIsLoggingIn(true);
                 setIsRegistering(false);
                 break;
             case 'register':
                 setIsRegistering(true);
-                setIsLogginIn(false);
+                setIsLoggingIn(false);
                 break;
             default:
             // do nothing
         }
     };
 
-    const stopProps = (e) => {
-        e.stopPropagation();
-    };
-
+   
     return (
         <Nav className="navbar__body" aria-label="main navigation" onSelect={navBarSelectHandler}>
             <Nav.Item className="navbar__item navbar__logo">
@@ -86,7 +83,7 @@ const Navbar = (props) => {
                     </Nav.Item>
                     :
                     <Nav.Item className="navbar__item--menu">
-                        <Nav.Item className="navbar__item" onClick={(e) => stopProps(e)}>
+                        <Nav.Item className="navbar__item">
                             <Nav.Link eventKey="login" >Login</Nav.Link>
                             {
                                 isLoggingIn &&
@@ -94,20 +91,20 @@ const Navbar = (props) => {
                                     setUserID={setUserID}
                                     setName={setName}
                                     isLoggingIn={isLoggingIn}
-                                    setIsLogginIn={setIsLogginIn}
+                                    setIsLoggingIn={setIsLoggingIn}
                                     setToken={setToken}
                                     setExpire={setExpire}
                                     getUserSettings
                                 />
                             }
                         </Nav.Item>
-                        <Nav.Item className="navbar__item" onClick={(e) => stopProps(e)}>
+                        <Nav.Item className="navbar__item">
                             <Nav.Link eventKey="register">Register</Nav.Link>
                             {
                                 isRegistering &&
                                 <Register
                                     setIsRegistering={setIsRegistering}
-                                    setIsLogginIn={setIsLogginIn}
+                                    setIsLoggingIn={setIsLoggingIn}
                                 />
                             }
                         </Nav.Item>
@@ -119,4 +116,4 @@ const Navbar = (props) => {
     );
 };
 
-export default Navbar;
+export default Navbar;;

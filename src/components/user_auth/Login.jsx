@@ -16,7 +16,7 @@ const Login = (props) => {
         setToken,
         setExpire,
         setName,
-        setIsLogginIn
+        setIsLoggingIn,
     } = props;
 
 
@@ -39,7 +39,7 @@ const Login = (props) => {
                 email: email,
                 password: password
             });
-            setIsLogginIn(false);
+            setIsLoggingIn(false);
             setToken(response.data.accessToken);
             const decoded = jwt_decode(response.data.accessToken);
             setUserID(decoded.userId);
@@ -65,50 +65,59 @@ const Login = (props) => {
         setValidated(true);
     };
 
+    const closeLogin = (e) => {
+        e.stopPropagation();
+        setIsLoggingIn(false);
+    }
+
     return (
-        <Card className="userAuth__body">
-            <Form noValidate validated={validated} onSubmit={handleSubmit} className="userAuth__container">
-                <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>Email</Form.Label>
-                    <InputGroup hasValidation className="userAuth__inputgroup--validation">
-                        <Form.Control
-                            className="userAuth__formcontrol"
-                            type="email"
-                            placeholder="Email/Username"
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <Form.Text className="form-text-muted form__failure">
-                            {msg.includes("Email") && msg}
-                        </Form.Text>
-                        <Form.Control.Feedback type="invalid">
-                            Email required.
-                        </Form.Control.Feedback>
-                    </InputGroup>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <InputGroup hasValidation className="userAuth__inputgroup--validation">
-                        <Form.Control
-                            className="userAuth__formcontrol"
-                            type="password"
-                            placeholder="Password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <Form.Text className="form-text-muted form__failure">
-                            {msg.includes("Password") && msg}
-                        </Form.Text>
-                        <Form.Control.Feedback type="invalid">
-                            Password required.
-                        </Form.Control.Feedback>
-                    </InputGroup>
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Login
-                </Button>
-            </Form>
-        </Card>
+        <div>
+            <div onClick={closeLogin} className="card__background">
+            </div>
+            <Card onClick={(e) => e.stopPropagation()} className="userAuth__body">
+                <Form noValidate validated={validated} onSubmit={handleSubmit} className="userAuth__container">
+                    <Form.Group className="mb-3" controlId="formBasic">
+                        <Form.Label>Email</Form.Label>
+                        <InputGroup hasValidation className="userAuth__inputgroup--validation">
+                            <Form.Control
+                                className="userAuth__formcontrol"
+                                type="email"
+                                placeholder="Email/Username"
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                            <Form.Text className="form-text-muted form__failure">
+                                {msg.includes("Email") && msg}
+                            </Form.Text>
+                            <Form.Control.Feedback type="invalid">
+                                Email required.
+                            </Form.Control.Feedback>
+                        </InputGroup>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <InputGroup hasValidation className="userAuth__inputgroup--validation">
+                            <Form.Control
+                                className="userAuth__formcontrol"
+                                type="password"
+                                placeholder="Password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <Form.Text className="form-text-muted form__failure">
+                                {msg.includes("Password") && msg}
+                            </Form.Text>
+                            <Form.Control.Feedback type="invalid">
+                                Password required.
+                            </Form.Control.Feedback>
+                        </InputGroup>
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Login
+                    </Button>
+                </Form>
+            </Card>
+        </div>
     );
 };
 

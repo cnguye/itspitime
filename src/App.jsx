@@ -13,13 +13,14 @@ function App() {
     const [name, setName] = useState('');
     const [token, setToken] = useState('');
     const [expire, setExpire] = useState('');
-    const [isLoggingIn, setIsLogginIn] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
 
-
     const stopProps = (e) => {
-        setIsLogginIn(false);
-        setIsRegistering(false);
+        if(isLoggingIn || isRegistering){
+            setIsLoggingIn(false);
+            setIsRegistering(false);
+        }
     };
 
     return (
@@ -36,9 +37,9 @@ function App() {
                                 setToken={setToken}
                                 setExpire={setExpire}
                                 isLoggingIn={isLoggingIn}
-                                setIsLogginIn={setIsLogginIn}
+                                setIsLoggingIn={setIsLoggingIn}
                                 isRegistering={isRegistering}
-                                setIsRegistering={setIsRegistering} />
+                                setIsRegistering={setIsRegistering}/>
                             <PiTimDashboard
                                 userID={userID}
                                 setUserID={setUserID}

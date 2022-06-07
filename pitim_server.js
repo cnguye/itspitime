@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const os = require("os");
 const app = express();
 app.use(cors());
+require("dotenv").config({ path: os.homedir() + "/.env" });
 
-const port = process.env.PORT || 5001;
+const port = process.env.SITE_PORT || 5001;
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
-
-require("dotenv").config({ path: ".env" });
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
