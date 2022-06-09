@@ -41,7 +41,7 @@ function PiList(props) {
         <div className="pi__section pi__section--card piList__body">
             <div className="piList__header">
                 <div className="piList__header--title">
-                    Watch list
+                    Watch List
                 </div>
                 <Button onClick={rescrapeWatchList}
                     className="piList__header--refresh__btn"

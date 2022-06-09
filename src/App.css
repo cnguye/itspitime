@@ -28,6 +28,14 @@ html {
     height: 100vh;
 }
 
+.card__body--item {
+    margin-bottom: 0.5rem;
+}
+
+.accordion-button {
+    padding: 7px;
+}
+
 /* Navbar */
 .navbar__body {
     padding: 0.3rem;
@@ -126,6 +134,28 @@ html {
     }
 
 
+}
+
+/* PiTim Telegram API Key Form */
+
+.telegram__input-group {
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 800px) {
+    .telegram_api_key__input-group {
+        max-width: 55ch;
+        margin-right: 5px;
+    }
+
+    .telegram__input-group + .telegram__input-group {
+        margin-left: 1rem;
+    }
+    
+    .text-success--api {
+        margin-left: 5px;
+    }
 }
 
 /* PiTim Blacklist */

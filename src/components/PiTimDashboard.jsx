@@ -9,6 +9,7 @@ import piTimLogo from '../assets/pitim_target.png';
 import PiList from "./PiList/PiList";
 import PiBlacklist from "./PiBlacklist/PiBlacklist";
 import PiForm from "./PiForm/PiForm";
+import TelegramForm from "./TelegramForm/TelegramForm";
 
 // import bootstrap components
 import Card from "react-bootstrap/Card";
@@ -67,6 +68,9 @@ function PiTimDashboard(props) {
     const [isListModified, setIsListModified] = useState(false);
     const [currBlacklist, setCurrBlacklist] = useState([]);
 
+    // user exclusive variables
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     useEffect(() => {
         getPiSkuModels();
         get_pi_currencies();
@@ -74,9 +78,13 @@ function PiTimDashboard(props) {
         // eslint-disable-next-line
     }, []);
 
+    // check if user is logged in
     useEffect(() => {
-        if (name !== '' && userID !== false)
+        if (name !== '' && userID !== false){
+            setIsLoggedIn(true);    
             getUserSettings();
+        }
+        
         else {
             setDbUserSettings({
                 blacklist: [],
@@ -87,6 +95,7 @@ function PiTimDashboard(props) {
                 watchlist: []
             });
             setCurrBlacklist([]);
+            setIsLoggedIn(false);    
         }
         // eslint-disable-next-line
     }, [name]);
@@ -177,16 +186,16 @@ function PiTimDashboard(props) {
             });
             return response.json(); // parses JSON response into native JavaScript objects
         }
-        saveUserSettings(`${SITE_URL}/save_user_settings`, { 
-            user_id: userID, 
-            user_name: name, 
-            user_settings: { 
-                blacklist: currBlacklist, 
-                watchlist: currUserSettings.watchlist 
+        saveUserSettings(`${SITE_URL}/save_user_settings`, {
+            user_id: userID,
+            user_name: name,
+            user_settings: {
+                blacklist: currBlacklist,
+                watchlist: currUserSettings.watchlist
             }
         }).then((data) => {
-                alert("Updated user successfully!");
-            });
+            alert("Updated user successfully!");
+        });
     };
 
     // update form list
@@ -311,6 +320,10 @@ function PiTimDashboard(props) {
                     </i>
                 </h3>
             </div>
+            <TelegramForm
+                isLoggedIn={isLoggedIn}
+                SITE_URL={SITE_URL}
+            />
             <PiForm
                 addPiToWatchlist={addPiToWatchlist}
                 userWatchlist={userWatchlist}

@@ -16,6 +16,7 @@
     "dotenv": "^16.0.1",
     "jwt-decode": "^3.1.2",
     "mysql": "^2.18.1",
+    "node-fetch": "^2.6.7",
     "react": "^18.1.0",
     "react-bootstrap": "^2.3.1",
     "react-dom": "^18.1.0",
