@@ -9,6 +9,23 @@ import Accordion from 'react-bootstrap/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
+// React transition group
+import { Transition } from 'react-transition-group';
+
+const duration = 300;
+
+const defaultStyle = {
+    transition: `opacity ${duration}ms ease-in-out`,
+    opacity: 0,
+};
+
+const transitionStyles = {
+    entering: { opacity: 1},
+    entered: { opacity: 1},
+    exiting: { opacity: 0},
+    exited: { opacity: 0},
+};
+
 function TelegramForm(props) {
     const { isLoggedIn, SITE_URL } = props;
 
@@ -16,11 +33,12 @@ function TelegramForm(props) {
     const [telegramBotKey, setTelegramBotKey] = useState('');
     const [isTestPassed, setIsTestPassed] = useState(false);
     const [apiErrorLog, setApiErrorLog] = useState('');
+    const [inProp, setInProp] = useState(false);
 
     useEffect(() => {
-     
-    }, [isLoggedIn])
-    
+
+    }, [isLoggedIn]);
+
 
     const testAPIKeyHandler = async (e) => {
         e.preventDefault();
@@ -43,18 +61,22 @@ function TelegramForm(props) {
         }).then((data) => {
             try {
                 const error_code = data.error_code;
+                console.log(error_code);
                 const message = data.description;
-                if(error_code === 401){
+                if (error_code !== undefined) {
                     setApiErrorLog(`${error_code}: ${message}`);
                     setIsTestPassed(false);
+                    setInProp(true);
                 }
                 else {
                     setIsTestPassed(true);
                     setApiErrorLog('');
+                    setInProp(false);
                 }
             }
             catch (error) {
                 setApiErrorLog(error);
+                setInProp(true);
             }
         });
     };
@@ -125,19 +147,28 @@ function TelegramForm(props) {
                             Add
                         </Button>
                     </Form>
-                    {(!isTestPassed && apiErrorLog) &&
-                        <Form>
-                            <InputGroup className="telegram__input-group telegram__input-group--chat-id">
-                                <InputGroup.Text className="text-danger">ERROR</InputGroup.Text>
-                                <Form.Control
-                                    type="text"
-                                    className=""
-                                    value={apiErrorLog}
-                                    disabled
-                                // onKeyDown={}
-                                />
-                            </InputGroup>
-                        </Form>
+                    {
+                    // (!isTestPassed && apiErrorLog) &&
+                        <Transition in={inProp} timeout={duration}>
+                            {state => (
+                                <Form 
+                                    style={{
+                                    ...defaultStyle,
+                                    ...transitionStyles[state]
+                                    }}>
+                                <InputGroup className="telegram__input-group telegram__input-group--chat-id">
+                                    <InputGroup.Text className="text-danger">ERROR</InputGroup.Text>
+                                    <Form.Control
+                                        type="text"
+                                        className=""
+                                        value={apiErrorLog}
+                                        disabled
+                                    // onKeyDown={}
+                                    />
+                                </InputGroup>
+                            </Form>
+                            )}
+                        </Transition>
                     }
                 </Accordion.Body>
             </Accordion.Item>

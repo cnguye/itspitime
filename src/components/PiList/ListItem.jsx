@@ -50,17 +50,19 @@ function ListItem(props) {
 
     const saveEditRowHandler = (e) => {
         setIsEditting(false);
+        let filteredEditCurrenciesSelected = [...new Set(editCurrenciesSelected)];
         setCurrUserSettings(
             {
                 blacklist: currUserSettings.blacklist,
                 watchlist: currUserSettings.watchlist.map((piRowSetting, piRowSettingKey) => {
                     if (piRowSettingKey === piRowKey) {
+                        // check if row has been edited.  Save if true
                         if (piRowSetting.model !== editModelSelected || piRowSetting.currencies !== editCurrenciesSelected) {
                             setIsListModified(true);
                             if (editCurrenciesSelected.includes("ALL"))
                                 return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: ["ALL"] };
                             else
-                                return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: editCurrenciesSelected };
+                                return { ...piRowSetting, sku: editSkuSelected, model: editModelSelected, currencies: filteredEditCurrenciesSelected };
                         }
                     }
                     return piRowSetting;

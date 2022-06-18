@@ -12,10 +12,10 @@ function PiFormEditCurrency(props) {
     } = props;
 
     const editAddSelectedCurrency = (e, currencyKey) => {
-        if (!editCurrenciesSelected.includes(e.target.value)) {
+        if (!editCurrenciesSelected.includes(e.target.value) || e.target.value === 'none') {
             setEditCurrenciesSelected(
                 editCurrenciesSelected.map((editCurrency, editCurrencyKey) => {
-                    if(editCurrencyKey === currencyKey)
+                    if (editCurrencyKey === currencyKey)
                         return e.target.value;
                     return editCurrency;
                 })
@@ -38,6 +38,7 @@ function PiFormEditCurrency(props) {
                                 currenciesList.map(currency => {
                                     return (
                                         <option
+                                            className="form__option"
                                             key={`currency_${currency.id}`}
                                             disabled={editCurrenciesSelected.includes(currency.currency)}
                                         >
@@ -46,6 +47,12 @@ function PiFormEditCurrency(props) {
                                     );
                                 })
                             }
+                            <option
+                                className="form__option"
+                                key={`currency_none`}
+                            >
+                                none
+                            </option>
                         </Form.Select>
                     );
                 })

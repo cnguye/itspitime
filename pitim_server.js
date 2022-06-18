@@ -84,12 +84,10 @@ app.post("/test_telegram_api_key", (req, res) => {
     )
         .then((response) => response.json())
         .then((response) => {
-            console.log("good");
             console.log(response);
             res.status(200).send(response);
         })
         .catch((error) => {
-            console.log("uh oh...");
             console.log(error);
             res.status(500).send(error);
         });
