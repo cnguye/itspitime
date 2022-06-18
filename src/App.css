@@ -297,7 +297,7 @@ html {
     margin-bottom: 0;
 }
 
-/* pi list */
+/* pi watch list */
 
 .piList__body {
     width: 100%;
@@ -361,6 +361,10 @@ html {
     position: absolute;
     right: 3px;
     top: 3px;
+}
+
+.form__option--remove {
+    background: var(--bs-warning);
 }
 
 @media (min-width: 800px) {

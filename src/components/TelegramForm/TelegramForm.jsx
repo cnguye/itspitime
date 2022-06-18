@@ -20,10 +20,10 @@ const defaultStyle = {
 };
 
 const transitionStyles = {
-    entering: { opacity: 1},
-    entered: { opacity: 1},
-    exiting: { opacity: 0},
-    exited: { opacity: 0},
+    entering: { opacity: 1 },
+    entered: { opacity: 1 },
+    exiting: { opacity: 0 },
+    exited: { opacity: 0 },
 };
 
 function TelegramForm(props) {
@@ -148,25 +148,26 @@ function TelegramForm(props) {
                         </Button>
                     </Form>
                     {
-                    // (!isTestPassed && apiErrorLog) &&
+                        // (!isTestPassed && apiErrorLog) &&
                         <Transition in={inProp} timeout={duration}>
                             {state => (
-                                <Form 
+                                <Form
+                                    className="telegram_error-form"
                                     style={{
-                                    ...defaultStyle,
-                                    ...transitionStyles[state]
+                                        ...defaultStyle,
+                                        ...transitionStyles[state]
                                     }}>
-                                <InputGroup className="telegram__input-group telegram__input-group--chat-id">
-                                    <InputGroup.Text className="text-danger">ERROR</InputGroup.Text>
-                                    <Form.Control
-                                        type="text"
-                                        className=""
-                                        value={apiErrorLog}
-                                        disabled
-                                    // onKeyDown={}
-                                    />
-                                </InputGroup>
-                            </Form>
+                                    <InputGroup className="telegram__input-group telegram__input-group--chat-id">
+                                        <InputGroup.Text className="text-danger">ERROR</InputGroup.Text>
+                                        <Form.Control
+                                            type="text"
+                                            className=""
+                                            value={apiErrorLog}
+                                            disabled
+                                        // onKeyDown={}
+                                        />
+                                    </InputGroup>
+                                </Form>
                             )}
                         </Transition>
                     }

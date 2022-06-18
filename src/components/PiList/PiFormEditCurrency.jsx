@@ -48,10 +48,10 @@ function PiFormEditCurrency(props) {
                                 })
                             }
                             <option
-                                className="form__option"
+                                className="form__option form__option--remove"
                                 key={`currency_none`}
                             >
-                                none
+                                REMOVE
                             </option>
                         </Form.Select>
                     );
